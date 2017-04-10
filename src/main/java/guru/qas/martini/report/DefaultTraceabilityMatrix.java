@@ -45,7 +45,7 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 	protected final ImmutableList<TraceabilityColumn> columns;
 
 	@Autowired
-	DefaultTraceabilityMatrix(TraceabilityColumn[] columns) {
+	protected DefaultTraceabilityMatrix(Iterable<TraceabilityColumn> columns) {
 		this.columns = ImmutableList.copyOf(columns);
 	}
 

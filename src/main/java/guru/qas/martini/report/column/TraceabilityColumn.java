@@ -18,5 +18,4 @@ package guru.qas.martini.report.column;
 
 @SuppressWarnings("WeakerAccess")
 public interface TraceabilityColumn {
-
 }
