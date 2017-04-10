@@ -17,9 +17,12 @@ limitations under the License.
 package guru.qas.martini.report;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.SequenceInputStream;
 import java.net.URI;
@@ -37,6 +40,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.google.common.collect.Lists;
 
@@ -49,11 +54,12 @@ public class Main {
 	}
 
 	protected void doSomething(CommandLine commandLine) throws IOException, URISyntaxException {
-		try (Reader reader = getReader(commandLine)) {
-			String s = commandLine.getOptionValue("s", "applicationContext.xml");
-			System.out.println("s is " + s);
+		try (Reader reader = getReader(commandLine);
+			 OutputStream out = getOutputStream(commandLine)) {
 
-			System.out.println("done");
+			ApplicationContext context = getApplicationContext(commandLine);
+			TraceabilityMatrix bean = context.getBean(TraceabilityMatrix.class);
+			bean.createReport(reader, out);
 		}
 	}
 
@@ -78,7 +84,10 @@ public class Main {
 		return getDirectoryReader(location, filenames);
 	}
 
-	protected Reader getDirectoryReader(String location, Collection<String> filenames) throws IOException, URISyntaxException {
+	protected Reader getDirectoryReader(
+		String location,
+		Collection<String> filenames
+	) throws IOException, URISyntaxException {
 
 		List<InputStream> streams = Lists.newArrayListWithExpectedSize(filenames.size());
 		for (String filename : filenames) {
@@ -98,6 +107,18 @@ public class Main {
 	protected Reader getFileReader(String location) throws IOException {
 		InputStream inputStream = new URL(location).openStream();
 		return new InputStreamReader(inputStream);
+	}
+
+	protected OutputStream getOutputStream(CommandLine commandLine) throws IOException {
+		String location = commandLine.getOptionValue('o');
+		File file = new File(location);
+		checkState(file.createNewFile() || file.canWrite(), "unable to write to file %s", location);
+		return new FileOutputStream(file, false);
+	}
+
+	protected ApplicationContext getApplicationContext(CommandLine commandLine) {
+		String configuration = commandLine.getOptionValue("s", "martiniContext.xml");
+		return new ClassPathXmlApplicationContext(configuration);
 	}
 
 	public static void main(String[] args) throws IOException, ParseException, URISyntaxException {

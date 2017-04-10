@@ -14,7 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package guru.qas.martini.report;
+package guru.qas.martini.report.column;
 
-public interface MartiniConstants {
+@SuppressWarnings("WeakerAccess")
+public interface TraceabilityColumn {
+
 }

@@ -33,6 +33,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteStreams;
 
+import guru.qas.martini.report.column.TraceabilityColumn;
+
 import static org.apache.poi.hssf.usermodel.HSSFPicture.PICTURE_TYPE_PNG;
 
 @SuppressWarnings("WeakerAccess")
@@ -43,7 +45,7 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 	protected final ImmutableList<TraceabilityColumn> columns;
 
 	@Autowired
-	DefaultTraceabilityMatrix(Iterable<TraceabilityColumn> columns) {
+	DefaultTraceabilityMatrix(TraceabilityColumn[] columns) {
 		this.columns = ImmutableList.copyOf(columns);
 	}
 
