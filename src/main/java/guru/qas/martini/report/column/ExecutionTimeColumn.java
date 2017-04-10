@@ -27,13 +27,13 @@ import guru.qas.martini.report.State;
 
 @SuppressWarnings("WeakerAccess")
 @Component
-public class FeatureNameColumn implements TraceabilityColumn {
+public class ExecutionTimeColumn implements TraceabilityColumn {
 
-	protected static final String LABEL = "Feature";
-	protected static final String KEY_FEATURE = "feature";
-	protected static final String KEY_NAME = "name";
+	protected static final String LABEL = "Execution (ms)";
+	protected static final String KEY_START = "startTimestamp";
+	protected static final String KEY_END = "endTimestamp";
 
-	protected FeatureNameColumn() {
+	protected ExecutionTimeColumn() {
 	}
 
 	@Override
@@ -43,10 +43,22 @@ public class FeatureNameColumn implements TraceabilityColumn {
 
 	@Override
 	public void doSomething(State state, HSSFCell cell, JsonObject o) {
-		JsonObject feature = o.getAsJsonObject(KEY_FEATURE);
-		JsonElement element = null == feature ? null : feature.get(KEY_NAME);
-		String name = null == element ? null : element.getAsString();
-		HSSFRichTextString richTextString = new HSSFRichTextString(name);
-		cell.setCellValue(richTextString);
+		Long start = getTimestamp(o, KEY_START);
+		Long end = null == start ? null : getTimestamp(o, KEY_END);
+		Long executionTime = null == end ? null : end - start;
+		doSomething(state, cell, executionTime);
+
+	}
+
+	protected Long getTimestamp(JsonObject o, String key) {
+		JsonElement element = o.get(key);
+		return null == element ? null : element.getAsLong();
+	}
+
+	protected void doSomething(State state, HSSFCell cell, Long executionTime) {
+		if (null != executionTime) {
+			cell.setCellValue(executionTime);
+			state.setExecutionTime(cell, executionTime);
+		}
 	}
 }

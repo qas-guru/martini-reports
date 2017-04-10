@@ -16,10 +16,14 @@ limitations under the License.
 
 package guru.qas.martini.report.column;
 
+import java.util.LinkedHashSet;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Joiner;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -27,13 +31,12 @@ import guru.qas.martini.report.State;
 
 @SuppressWarnings("WeakerAccess")
 @Component
-public class FeatureNameColumn implements TraceabilityColumn {
+public class ThemeColumn implements TraceabilityColumn {
 
-	protected static final String LABEL = "Feature";
-	protected static final String KEY_FEATURE = "feature";
-	protected static final String KEY_NAME = "name";
+	protected static final String LABEL = "Themes";
+	protected static final String KEY = "categories";
 
-	protected FeatureNameColumn() {
+	protected ThemeColumn() {
 	}
 
 	@Override
@@ -43,10 +46,27 @@ public class FeatureNameColumn implements TraceabilityColumn {
 
 	@Override
 	public void doSomething(State state, HSSFCell cell, JsonObject o) {
-		JsonObject feature = o.getAsJsonObject(KEY_FEATURE);
-		JsonElement element = null == feature ? null : feature.get(KEY_NAME);
-		String name = null == element ? null : element.getAsString();
-		HSSFRichTextString richTextString = new HSSFRichTextString(name);
+		JsonArray categories = o.getAsJsonArray(KEY);
+		if (null != categories) {
+			doSomething(state, cell, categories);
+		}
+	}
+
+	protected void doSomething(State state, HSSFCell cell, JsonArray categories) {
+		int size = categories.size();
+
+		LinkedHashSet<String> ordered = new LinkedHashSet<>();
+
+		for (int i = 0; i < size; i++) {
+			JsonElement element = categories.get(i);
+			String category = element.getAsString();
+			ordered.add(category);
+		}
+
+		String value = Joiner.on("\n").join(ordered);
+		HSSFRichTextString richTextString = new HSSFRichTextString(value);
 		cell.setCellValue(richTextString);
+
+		state.setThemes(cell, ordered);
 	}
 }

@@ -20,20 +20,19 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import guru.qas.martini.report.State;
 
 @SuppressWarnings("WeakerAccess")
 @Component
-public class FeatureNameColumn implements TraceabilityColumn {
+public class StatusColumn implements TraceabilityColumn {
 
-	protected static final String LABEL = "Feature";
-	protected static final String KEY_FEATURE = "feature";
-	protected static final String KEY_NAME = "name";
+	protected static final String LABEL = "Status";
+	protected static final String KEY = "status";
 
-	protected FeatureNameColumn() {
+	protected StatusColumn() {
 	}
 
 	@Override
@@ -43,10 +42,11 @@ public class FeatureNameColumn implements TraceabilityColumn {
 
 	@Override
 	public void doSomething(State state, HSSFCell cell, JsonObject o) {
-		JsonObject feature = o.getAsJsonObject(KEY_FEATURE);
-		JsonElement element = null == feature ? null : feature.get(KEY_NAME);
-		String name = null == element ? null : element.getAsString();
-		HSSFRichTextString richTextString = new HSSFRichTextString(name);
+		JsonPrimitive primitive = o.getAsJsonPrimitive(KEY);
+		String status = null == primitive ? null : primitive.getAsString();
+
+		HSSFRichTextString richTextString = new HSSFRichTextString(status);
 		cell.setCellValue(richTextString);
+		state.setStatus(cell, status);
 	}
 }

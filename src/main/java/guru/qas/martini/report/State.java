@@ -14,17 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package guru.qas.martini.report.column;
+package guru.qas.martini.report;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 
-import com.google.gson.JsonObject;
+public interface State {
 
-import guru.qas.martini.report.State;
+	void setStatus(HSSFCell cell, String status);
 
-@SuppressWarnings("WeakerAccess")
-public interface TraceabilityColumn {
-	String getLabel();
+	void setThemes(HSSFCell cell, Iterable<String> themes);
 
-	void doSomething(State state, HSSFCell cell, JsonObject o);
+	void setExecutionTime(HSSFCell cell, long executionTime);
+
+	void updateWorkbook();
+
 }

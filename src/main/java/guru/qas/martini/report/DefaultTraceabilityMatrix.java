@@ -21,8 +21,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
@@ -56,18 +62,21 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet("Results");
 		addBanner(sheet);
+		addHeader(sheet);
 
 		LineReader lineReader = new LineReader(reader);
-		for (String line = lineReader.readLine(); null != line;) {
+		State state = new DefaultState();
+		for (String line = lineReader.readLine(); null != line; ) {
 			MartiniProcessor martiniProcessor = new MartiniProcessor();
 			while (null != line && martiniProcessor.processLine(line)) {
 				line = lineReader.readLine();
 			}
 			JsonObject result = martiniProcessor.getResult();
-			System.out.println("result: " +  result);
+			doSomething(state, sheet, result);
 			line = null == line ? null : lineReader.readLine();
 		}
 
+		state.updateWorkbook();
 		workbook.write(outputStream);
 		outputStream.flush();
 	}
@@ -79,7 +88,7 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		int imageIndex = workbook.addPicture(imageBytes, PICTURE_TYPE_PNG);
 
 		ClientAnchor clientAnchor = getClientAnchor(workbook);
-		addBanner(sheet, imageIndex, clientAnchor);
+		//addBanner(sheet, imageIndex, clientAnchor);
 	}
 
 	private byte[] getImageBytes() throws IOException {
@@ -94,8 +103,8 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		clientAnchor.setAnchorType(ClientAnchor.AnchorType.MOVE_AND_RESIZE);
 		clientAnchor.setCol1(0);
 		clientAnchor.setRow1(0);
-		clientAnchor.setRow2(0);
-		clientAnchor.setCol2(1);
+		clientAnchor.setRow2(6);
+		clientAnchor.setCol2(6);
 		return clientAnchor;
 	}
 
@@ -103,5 +112,38 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		Drawing drawingPatriarch = sheet.createDrawingPatriarch();
 		Picture picture = drawingPatriarch.createPicture(clientAnchor, imageIndex);
 		picture.resize();
+	}
+
+	protected void addHeader(HSSFSheet sheet) {
+		HSSFRow row = sheet.createRow(0);
+
+		HSSFWorkbook workbook = sheet.getWorkbook();
+		HSSFCellStyle style = workbook.createCellStyle();
+		style.setBorderBottom(BorderStyle.MEDIUM);
+
+		HSSFFont font = workbook.createFont();
+		font.setBold(true);
+		font.setFontName("Arial");
+		style.setFont(font);
+
+		for (int i = 0; i < columns.size(); i++) {
+			TraceabilityColumn column = columns.get(i);
+			HSSFCell cell = row.createCell(i, CellType.STRING);
+
+			String label = column.getLabel();
+			cell.setCellValue(label);
+			cell.setCellStyle(style);
+		}
+	}
+
+	protected void doSomething(State state, HSSFSheet sheet, JsonObject object) {
+		int index = sheet.getLastRowNum();
+		HSSFRow row = sheet.createRow(index + 1);
+
+		for (int i = 0; i < columns.size(); i++) {
+			HSSFCell cell = row.createCell(i);
+			TraceabilityColumn column = columns.get(i);
+			column.doSomething(state, cell, object);
+		}
 	}
 }

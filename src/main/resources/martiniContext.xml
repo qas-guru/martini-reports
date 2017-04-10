@@ -12,6 +12,10 @@
 	<context:component-scan base-package="guru.qas.martini.report"/>
 
 	<util:list id="columns" value-type="guru.qas.martini.report.column.TraceabilityColumn">
+		<ref bean="themeColumn"/>
 		<ref bean="featureNameColumn"/>
+		<ref bean="scenarioNameColumn"/>
+		<ref bean="statusColumn"/>
+		<ref bean="executionTimeColumn"/>
 	</util:list>
 </beans>
