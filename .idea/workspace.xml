@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="967039fd-b343-4c40-b737-0ca550a408b3" name="Default" comment="Add">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/FeatureNameColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/TraceabilityColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/martiniContext.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/MartiniConstants.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/TraceabilityColumn.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/applicationContext.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/MartiniConstants.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/TraceabilityColumn.class" afterPath="" />
+    <list default="true" id="967039fd-b343-4c40-b737-0ca550a408b3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/DefaultTraceabilityMatrix.class" afterPath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/DefaultTraceabilityMatrix.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/Main.class" afterPath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/Main.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultTraceabilityMatrix.java" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultTraceabilityMatrix.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/Main.java" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/Main.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -758,12 +747,20 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1491600729528</updated>
-      <workItem from="1491600732591" duration="10799000" />
+      <workItem from="1491600732591" duration="10817000" />
     </task>
+    <task id="LOCAL-00001" summary="Adding columns and Spring startup.">
+      <created>1491852276185</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1491852276185</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10799000" />
+    <option name="totallyTimeSpent" value="10817000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -816,6 +813,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Adding columns and Spring startup." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding columns and Spring startup." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
