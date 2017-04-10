@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -31,15 +30,9 @@ import org.apache.poi.ss.usermodel.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
-import com.google.common.io.LineProcessor;
 import com.google.common.io.LineReader;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import guru.qas.martini.report.column.TraceabilityColumn;
@@ -65,50 +58,18 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		addBanner(sheet);
 
 		LineReader lineReader = new LineReader(reader);
-		Blah blah = new Blah();
-		String line = lineReader.readLine();
-		while (null != line && blah.processLine(line)) {
-			line = lineReader.readLine();
+		for (String line = lineReader.readLine(); null != line;) {
+			MartiniProcessor martiniProcessor = new MartiniProcessor();
+			while (null != line && martiniProcessor.processLine(line)) {
+				line = lineReader.readLine();
+			}
+			JsonObject result = martiniProcessor.getResult();
+			System.out.println("result: " +  result);
+			line = null == line ? null : lineReader.readLine();
 		}
-		JsonObject result = blah.getResult();
-		System.out.println("result 1 " + result);
-
-		System.out.println("LAST LINE " + line);
-		line = lineReader.readLine();
-		blah = new Blah();
-		while (null != line && blah.processLine(line)) {
-			line = lineReader.readLine();
-		}
-		result = blah.getResult();
-		System.out.println("result 2 " + result);
-
 
 		workbook.write(outputStream);
 		outputStream.flush();
-	}
-
-	protected class Blah implements LineProcessor<JsonObject> {
-
-		int openingCount = 0;
-		int closingCount = 0;
-		List<String> lines = Lists.newArrayList();
-
-		@Override
-		public boolean processLine(String s) throws IOException {
-			openingCount += s.chars().filter(e -> e == '{').count();
-			closingCount += s.chars().filter(e -> e == '}').count();
-			lines.add(s.trim());
-			return openingCount != closingCount;
-		}
-
-		@Override
-		public JsonObject getResult() {
-			String joined = Joiner.on('\n').skipNulls().join(lines);
-			Gson gson = new GsonBuilder().setLenient().serializeNulls().create();
-			JsonObject jsonObject = gson.fromJson(joined, JsonObject.class);
-			JsonObject martini = jsonObject.getAsJsonObject("martini");
-			return martini;
-		}
 	}
 
 	protected void addBanner(HSSFSheet sheet) throws IOException {
