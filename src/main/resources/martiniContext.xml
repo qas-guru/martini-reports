@@ -17,5 +17,8 @@
 		<ref bean="scenarioNameColumn"/>
 		<ref bean="statusColumn"/>
 		<ref bean="executionTimeColumn"/>
+		<ref bean="scenarioDescriptionColumn"/>
+		<ref bean="locationColumn"/>
+		<ref bean="tagColumn"/>
 	</util:list>
 </beans>

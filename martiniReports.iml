@@ -6,6 +6,7 @@
         <fileset id="fileset" name="Martini Reports Context" removed="false">
           <file>file://$MODULE_DIR$/src/main/resources/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/src/main/java/guru/qas/martini/report/ReportConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/resources/martiniContext.xml</file>
         </fileset>
       </configuration>
     </facet>

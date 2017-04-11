@@ -17,22 +17,22 @@ limitations under the License.
 package guru.qas.martini.report.column;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import guru.qas.martini.report.State;
 
 @SuppressWarnings("WeakerAccess")
 @Component
-public class ExecutionTimeColumn implements TraceabilityColumn {
+public class ScenarioDescriptionColumn implements TraceabilityColumn {
 
-	protected static final String LABEL = "Execution (ms)";
-	protected static final String KEY_START = "startTimestamp";
-	protected static final String KEY_END = "endTimestamp";
+	protected static final String LABEL = "Description";
+	protected static final String KEY = "description";
 
-	protected ExecutionTimeColumn() {
+	protected ScenarioDescriptionColumn() {
 	}
 
 	@Override
@@ -42,22 +42,9 @@ public class ExecutionTimeColumn implements TraceabilityColumn {
 
 	@Override
 	public void doSomething(State state, HSSFCell cell, JsonObject o) {
-		Long start = getTimestamp(o, KEY_START);
-		Long end = null == start ? null : getTimestamp(o, KEY_END);
-		Long executionTime = null == end ? null : end - start;
-		doSomething(state, cell, executionTime);
-
-	}
-
-	protected Long getTimestamp(JsonObject o, String key) {
-		JsonElement element = o.get(key);
-		return null == element ? null : element.getAsLong();
-	}
-
-	protected void doSomething(State state, HSSFCell cell, Long executionTime) {
-		if (null != executionTime) {
-			cell.setCellValue(executionTime);
-			state.setExecutionTime(cell, executionTime);
-		}
+		JsonPrimitive primitive = o.getAsJsonPrimitive(KEY);
+		String name = null == primitive ? null : primitive.getAsString();
+		HSSFRichTextString richTextString = new HSSFRichTextString(name);
+		cell.setCellValue(richTextString);
 	}
 }
