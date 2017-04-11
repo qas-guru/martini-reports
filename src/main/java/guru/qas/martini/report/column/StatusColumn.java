@@ -41,7 +41,7 @@ public class StatusColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void doSomething(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		JsonPrimitive primitive = o.getAsJsonPrimitive(KEY);
 		String status = null == primitive ? null : primitive.getAsString();
 

@@ -17,6 +17,7 @@ limitations under the License.
 package guru.qas.martini.report;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 
 import com.google.gson.JsonObject;
 
@@ -30,5 +31,7 @@ public interface State {
 
 	void addSuite(JsonObject suite);
 
-	void updateWorkbook();
+	void updateResults();
+
+	void updateSuites(HSSFSheet sheet);
 }

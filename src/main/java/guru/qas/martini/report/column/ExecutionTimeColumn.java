@@ -41,7 +41,7 @@ public class ExecutionTimeColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void doSomething(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		Long start = getTimestamp(o, KEY_START);
 		Long end = null == start ? null : getTimestamp(o, KEY_END);
 		Long executionTime = null == end ? null : end - start;

@@ -62,8 +62,10 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 	public void createReport(Reader reader, OutputStream outputStream) throws IOException {
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet("Results");
-		addBanner(sheet);
 		addHeader(sheet);
+
+		HSSFSheet suiteSheet = workbook.createSheet("Suites");
+		addBanner(suiteSheet);
 
 		LineReader lineReader = new LineReader(reader);
 		State state = new DefaultState();
@@ -73,12 +75,15 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 				line = lineReader.readLine();
 			}
 			JsonObject result = martiniProcessor.getResult();
-			doSomething(state, sheet, result);
+			addResult(state, sheet, result);
 			line = null == line ? null : lineReader.readLine();
 		}
 
 		resizeColumns(sheet);
-		state.updateWorkbook();
+
+		state.updateResults();
+		state.updateSuites(suiteSheet);
+
 		workbook.write(outputStream);
 		outputStream.flush();
 	}
@@ -90,7 +95,7 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		int imageIndex = workbook.addPicture(imageBytes, PICTURE_TYPE_PNG);
 
 		ClientAnchor clientAnchor = getClientAnchor(workbook);
-		//addBanner(sheet, imageIndex, clientAnchor);
+		addBanner(sheet, imageIndex, clientAnchor);
 	}
 
 	private byte[] getImageBytes() throws IOException {
@@ -165,20 +170,20 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		return font;
 	}
 
-	protected void doSomething(State state, HSSFSheet sheet, JsonObject object) {
+	protected void addResult(State state, HSSFSheet sheet, JsonObject object) {
 		int index = sheet.getLastRowNum();
 		HSSFRow row = sheet.createRow(index + 1);
 
 		for (int i = 0; i < columns.size(); i++) {
 			HSSFCell cell = row.createCell(i);
 			TraceabilityColumn column = columns.get(i);
-			column.doSomething(state, cell, object);
+			column.addResult(state, cell, object);
 		}
 	}
 
 	protected void resizeColumns(HSSFSheet sheet) {
 		for (int i = 0; i < columns.size(); i++) {
-			sheet.autoSizeColumn(i);
+			sheet.autoSizeColumn(i, false);
 		}
 	}
 }

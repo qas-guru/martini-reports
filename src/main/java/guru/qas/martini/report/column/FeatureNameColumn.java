@@ -42,7 +42,7 @@ public class FeatureNameColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void doSomething(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		JsonObject feature = o.getAsJsonObject(KEY_FEATURE);
 		JsonElement element = null == feature ? null : feature.get(KEY_NAME);
 		String name = null == element ? null : element.getAsString();

@@ -17,7 +17,9 @@ limitations under the License.
 package guru.qas.martini.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -27,6 +29,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -77,7 +80,12 @@ public class DefaultState implements State {
 	}
 
 	@Override
-	public void updateWorkbook() {
+	public void updateResults() {
+		updateLongestExecutions();
+		colorRowsByStatus();
+	}
+
+	public void updateLongestExecutions() {
 		if (!longestExecutionCells.isEmpty()) {
 			for (HSSFCell cell : longestExecutionCells) {
 				HSSFCellStyle original = cell.getCellStyle();
@@ -90,8 +98,6 @@ public class DefaultState implements State {
 				font.setBold(true);
 				font.setColor(IndexedColors.ORANGE.getIndex());
 				newStyle.setFont(font);
-//				newStyle.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
-//				newStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 				cell.setCellStyle(newStyle);
 
 				HSSFRow row = cell.getRow();
@@ -122,8 +128,85 @@ public class DefaultState implements State {
 		}
 	}
 
+	public void colorRowsByStatus() {
+		Map<String, Collection<HSSFCell>> statusMap = statii.asMap();
+		for (Map.Entry<String, Collection<HSSFCell>> mapEntry : statusMap.entrySet()) {
+			String status = mapEntry.getKey();
+
+			Short color = null;
+			switch (status) {
+				case "SKIPPED":
+					color = IndexedColors.LEMON_CHIFFON.getIndex();
+					break;
+				case "PASSED":
+					color = IndexedColors.LIGHT_TURQUOISE.getIndex();
+					break;
+				case "FAILED":
+					color = IndexedColors.ROSE.getIndex();
+					break;
+			}
+
+			if (null != color) {
+				Collection<HSSFCell> statusCells = mapEntry.getValue();
+				colorRows(color, statusCells);
+			}
+		}
+	}
+
+	protected void colorRows(short color, Iterable<HSSFCell> cells) {
+		for (HSSFCell cell : cells) {
+			HSSFRow row = cell.getRow();
+			colorRow(color, row);
+
+		}
+	}
+
+	protected void colorRow(short color, HSSFRow row) {
+		short firstCellNum = row.getFirstCellNum();
+		short lastCellNum = row.getLastCellNum();
+		for (int i = firstCellNum; i <= lastCellNum; i++) {
+			HSSFCell cell = row.getCell(i - 1);
+			if (null != cell) {
+				HSSFCellStyle cellStyle = cell.getCellStyle();
+				HSSFWorkbook workbook = cell.getSheet().getWorkbook();
+				HSSFCellStyle clone = workbook.createCellStyle();
+				clone.cloneStyleFrom(cellStyle);
+				clone.setFillForegroundColor(color);
+				clone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+				BorderStyle borderStyle = cellStyle.getBorderLeftEnum();
+				clone.setBorderLeft(BorderStyle.NONE == borderStyle ? BorderStyle.THIN : borderStyle);
+				short borderColor = cellStyle.getLeftBorderColor();
+				clone.setLeftBorderColor(0 == borderColor ? IndexedColors.BLACK.getIndex() : borderColor);
+
+
+				borderStyle = cellStyle.getBorderRightEnum();
+				clone.setBorderRight(BorderStyle.NONE == borderStyle ? BorderStyle.THIN : borderStyle);
+				borderColor = cellStyle.getRightBorderColor();
+				clone.setRightBorderColor(0 == borderColor ? IndexedColors.BLACK.getIndex() : borderColor);
+
+
+				borderStyle = cellStyle.getBorderTopEnum();
+				clone.setBorderTop(BorderStyle.NONE == borderStyle ? BorderStyle.THIN : borderStyle);
+				borderColor = cellStyle.getTopBorderColor();
+				clone.setTopBorderColor(0 == borderColor ? IndexedColors.BLACK.getIndex() : borderColor);
+
+
+				borderStyle = cellStyle.getBorderBottomEnum();
+				clone.setBorderBottom(BorderStyle.NONE == borderStyle ? BorderStyle.THIN : borderStyle);
+				borderColor = cellStyle.getBottomBorderColor();
+				clone.setBottomBorderColor(borderColor);
+				cell.setCellStyle(clone);
+			}
+		}
+	}
+
 	@Override
 	public void addSuite(JsonObject suite) {
 		suites.add(suite);
+	}
+
+	@Override
+	public void updateSuites(HSSFSheet sheet) {
 	}
 }

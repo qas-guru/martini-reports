@@ -48,7 +48,7 @@ public class TagColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void doSomething(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		JsonArray array = o.getAsJsonArray(KEY_TAGS);
 		if (null != array) {
 			doSomething(cell, array);

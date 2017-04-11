@@ -41,7 +41,7 @@ public class ScenarioNameColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void doSomething(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		JsonPrimitive primitive = o.getAsJsonPrimitive("name");
 		String name = null == primitive ? null : primitive.getAsString();
 		HSSFRichTextString richTextString = new HSSFRichTextString(name);

@@ -45,7 +45,7 @@ public class ThemeColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void doSomething(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		JsonArray categories = o.getAsJsonArray(KEY);
 		if (null != categories) {
 			doSomething(state, cell, categories);

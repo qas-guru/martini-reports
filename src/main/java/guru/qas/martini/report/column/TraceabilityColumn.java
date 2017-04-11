@@ -26,5 +26,5 @@ import guru.qas.martini.report.State;
 public interface TraceabilityColumn {
 	String getLabel();
 
-	void doSomething(State state, HSSFCell cell, JsonObject o);
+	void addResult(State state, HSSFCell cell, JsonObject o);
 }

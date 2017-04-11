@@ -42,7 +42,7 @@ public class SuiteColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void doSomething(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		JsonElement element = o.get(KEY_SUITE);
 		JsonObject suite = null == element ? null : element.getAsJsonObject();
 

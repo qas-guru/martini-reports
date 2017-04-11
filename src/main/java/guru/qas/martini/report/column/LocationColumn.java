@@ -43,7 +43,7 @@ public class LocationColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void doSomething(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		String line = getLine(o);
 		String relative = getResource(o);
 
