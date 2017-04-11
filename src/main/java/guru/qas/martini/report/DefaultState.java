@@ -136,10 +136,10 @@ public class DefaultState implements State {
 			Short color = null;
 			switch (status) {
 				case "SKIPPED":
-					color = IndexedColors.LEMON_CHIFFON.getIndex();
+					color = IndexedColors.TAN.getIndex();
 					break;
 				case "PASSED":
-					color = IndexedColors.LIGHT_TURQUOISE.getIndex();
+					color = IndexedColors.LIME.getIndex();
 					break;
 				case "FAILED":
 					color = IndexedColors.ROSE.getIndex();

@@ -17,9 +17,13 @@ limitations under the License.
 package guru.qas.martini.report.column;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import guru.qas.martini.report.State;
 
@@ -28,6 +32,8 @@ import guru.qas.martini.report.State;
 public class ExceptionColumn implements TraceabilityColumn {
 
 	protected static final String LABEL = "Exception";
+	protected static final String KEY_STEPS = "steps";
+	protected static final String KEY_EXCEPTION = "exception";
 
 	protected ExceptionColumn() {
 	}
@@ -39,5 +45,19 @@ public class ExceptionColumn implements TraceabilityColumn {
 
 	@Override
 	public void addResult(State state, HSSFCell cell, JsonObject o) {
+		JsonArray array = o.getAsJsonArray(KEY_STEPS);
+		int size = array.size();
+
+		String value = null;
+		for (int i = 0; null == value && i < size; i++) {
+			JsonElement element = array.get(i);
+			JsonObject step = element.getAsJsonObject();
+			JsonPrimitive primitive = step.getAsJsonPrimitive(KEY_EXCEPTION);
+			String stackTrace = null == primitive ? null : primitive.getAsString().trim();
+			value = null != stackTrace && !stackTrace.isEmpty() ? stackTrace: null;
+		}
+
+		HSSFRichTextString richTextString = new HSSFRichTextString(value);
+		cell.setCellValue(richTextString);
 	}
 }
