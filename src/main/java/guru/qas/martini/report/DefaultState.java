@@ -98,10 +98,12 @@ public class DefaultState implements State {
 				HSSFWorkbook workbook = sheet.getWorkbook();
 				HSSFCellStyle newStyle = workbook.createCellStyle();
 				newStyle.cloneStyleFrom(original);
+				HSSFFont originalFont = original.getFont(workbook);
 
 				HSSFFont font = workbook.createFont();
 				font.setBold(true);
 				font.setColor(IndexedColors.ORANGE.getIndex());
+				font.setFontHeight((short) Math.round(originalFont.getFontHeight() * 1.5));
 				newStyle.setFont(font);
 				cell.setCellStyle(newStyle);
 
