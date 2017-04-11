@@ -51,11 +51,11 @@ public class TagColumn implements TraceabilityColumn {
 	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		JsonArray array = o.getAsJsonArray(KEY_TAGS);
 		if (null != array) {
-			doSomething(cell, array);
+			addResult(cell, array);
 		}
 	}
 
-	protected void doSomething(HSSFCell cell, JsonArray array) {
+	protected void addResult(HSSFCell cell, JsonArray array) {
 
 		int size = array.size();
 		List<String> tags = Lists.newArrayListWithExpectedSize(size);
@@ -65,7 +65,7 @@ public class TagColumn implements TraceabilityColumn {
 			tags.add(tag);
 		}
 
-		String value = Joiner.on(", ").skipNulls().join(tags);
+		String value = Joiner.on('\n').skipNulls().join(tags);
 		HSSFRichTextString richTextString = new HSSFRichTextString(value);
 		cell.setCellValue(richTextString);
 	}

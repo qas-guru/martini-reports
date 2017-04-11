@@ -16,9 +16,12 @@ limitations under the License.
 
 package guru.qas.martini.report.column;
 
-import org.apache.commons.lang3.text.WordUtils;
+import java.util.Date;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonObject;
@@ -28,12 +31,13 @@ import guru.qas.martini.report.State;
 
 @SuppressWarnings("WeakerAccess")
 @Component
-public class ScenarioDescriptionColumn implements TraceabilityColumn {
+public class TimestampColumn implements TraceabilityColumn {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(TimestampColumn.class);
 
-	protected static final String LABEL = "Description";
-	protected static final String KEY = "description";
+	protected static final String LABEL = "Timestamp";
+	protected static final String KEY = "startTimestamp";
 
-	protected ScenarioDescriptionColumn() {
+	protected TimestampColumn() {
 	}
 
 	@Override
@@ -44,11 +48,25 @@ public class ScenarioDescriptionColumn implements TraceabilityColumn {
 	@Override
 	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		JsonPrimitive primitive = o.getAsJsonPrimitive(KEY);
-		String value = null == primitive ? "" : primitive.getAsString();
+		if (null != primitive) {
+			addResult(cell, primitive);
+		}
+	}
 
-		String normalized = value.trim().replaceAll("\\s+", " ");
-		String wrapped = WordUtils.wrap(normalized, 60);
-		HSSFRichTextString richTextString = new HSSFRichTextString(wrapped);
+	protected void addResult(HSSFCell cell, JsonPrimitive primitive) {
+		String timestamp = primitive.getAsString();
+
+		String value;
+		try {
+			Date date = new Date(Long.parseLong(timestamp));
+			value = String.format("%s\n(%s)", timestamp, date);
+		}
+		catch (NumberFormatException e) {
+			value = timestamp;
+			LOGGER.warn("unable to parse '{}' to a long", timestamp, e);
+		}
+
+		HSSFRichTextString richTextString = new HSSFRichTextString(value);
 		cell.setCellValue(richTextString);
 	}
 }

@@ -16,7 +16,6 @@ limitations under the License.
 
 package guru.qas.martini.report.column;
 
-import org.apache.commons.lang3.text.WordUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.springframework.stereotype.Component;
@@ -28,12 +27,13 @@ import guru.qas.martini.report.State;
 
 @SuppressWarnings("WeakerAccess")
 @Component
-public class ScenarioDescriptionColumn implements TraceabilityColumn {
+public class ThreadColumn implements TraceabilityColumn {
 
-	protected static final String LABEL = "Description";
-	protected static final String KEY = "description";
+	protected static final String LABEL = "Thread Group/Name";
+	protected static final String KEY_GROUP = "threadGroup";
+	protected static final String KEY_NAME = "thread";
 
-	protected ScenarioDescriptionColumn() {
+	protected ThreadColumn() {
 	}
 
 	@Override
@@ -43,12 +43,15 @@ public class ScenarioDescriptionColumn implements TraceabilityColumn {
 
 	@Override
 	public void addResult(State state, HSSFCell cell, JsonObject o) {
-		JsonPrimitive primitive = o.getAsJsonPrimitive(KEY);
-		String value = null == primitive ? "" : primitive.getAsString();
+		JsonPrimitive primitive = o.getAsJsonPrimitive(KEY_GROUP);
+		String group = null == primitive ? "" : primitive.getAsString();
 
-		String normalized = value.trim().replaceAll("\\s+", " ");
-		String wrapped = WordUtils.wrap(normalized, 60);
-		HSSFRichTextString richTextString = new HSSFRichTextString(wrapped);
+		primitive = o.getAsJsonPrimitive(KEY_NAME);
+		String thread = null == primitive ? "" : primitive.getAsString();
+
+		String value = group.isEmpty() ? thread : String.format("%s %s", group, thread);
+
+		HSSFRichTextString richTextString = new HSSFRichTextString(value);
 		cell.setCellValue(richTextString);
 	}
 }

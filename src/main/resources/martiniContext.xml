@@ -17,10 +17,12 @@
 		<ref bean="scenarioNameColumn"/>
 		<ref bean="statusColumn"/>
 		<ref bean="exceptionColumn"/>
+		<ref bean="timestampColumn"/>
 		<ref bean="executionTimeColumn"/>
 		<ref bean="scenarioDescriptionColumn"/>
 		<ref bean="locationColumn"/>
 		<ref bean="tagColumn"/>
 		<ref bean="suiteColumn"/>
+		<ref bean="threadColumn"/>
 	</util:list>
 </beans>
