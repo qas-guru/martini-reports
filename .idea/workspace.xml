@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="967039fd-b343-4c40-b737-0ca550a408b3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/LocationColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/ScenarioDescriptionColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/TagColumn.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/DefaultTraceabilityMatrix.class" afterPath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/DefaultTraceabilityMatrix.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/martiniReports.iml" afterPath="$PROJECT_DIR$/martiniReports.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/ExecutionTimeColumn.java" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/ExecutionTimeColumn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/martiniContext.xml" afterPath="$PROJECT_DIR$/src/main/resources/martiniContext.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -845,7 +839,7 @@
       <option name="presentableId" value="Default" />
       <updated>1491600729528</updated>
       <workItem from="1491600732591" duration="11416000" />
-      <workItem from="1491853136154" duration="17407000" />
+      <workItem from="1491853136154" duration="17422000" />
     </task>
     <task id="LOCAL-00001" summary="Adding columns and Spring startup.">
       <created>1491852276185</created>
@@ -903,11 +897,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491869083187</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Adding columns.">
+      <created>1491923384422</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1491923384422</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28823000" />
+    <option name="totallyTimeSpent" value="28838000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -968,7 +969,8 @@
     <MESSAGE value="Correct martini parsing." />
     <MESSAGE value="Applying styles to output." />
     <MESSAGE value="Increased header font." />
-    <option name="LAST_COMMIT_MESSAGE" value="Increased header font." />
+    <MESSAGE value="Adding columns." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding columns." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
