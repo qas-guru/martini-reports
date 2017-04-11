@@ -305,6 +305,8 @@ public class DefaultState implements State {
 		row.createCell(3, CellType.STRING).setCellValue("Hostname");
 		row.createCell(4, CellType.STRING).setCellValue("IP");
 		row.createCell(5, CellType.STRING).setCellValue("Username");
+		row.createCell(6, CellType.STRING).setCellValue("Profiles");
+		row.createCell(7, CellType.STRING).setCellValue("Environment Variables");
 
 
 		for (JsonObject suite : suites) {
@@ -330,7 +332,6 @@ public class DefaultState implements State {
 			cell = row.createCell(2);
 			primitive = suite.getAsJsonPrimitive("name");
 			cell.setCellValue(null == primitive ? "" : primitive.getAsString());
-
 
 			cell = row.createCell(3);
 			JsonObject host = suite.getAsJsonObject("host");
@@ -359,7 +360,7 @@ public class DefaultState implements State {
 				cell.setCellValue(profilesValue);
 			}
 
-			cell = row.createCell(6);
+			cell = row.createCell(7);
 			JsonObject environmentVariables = suite.getAsJsonObject("environmentVariables");
 			Map<String, String> environment = new LinkedHashMap<>();
 			if (null != environmentVariables) {
@@ -376,7 +377,7 @@ public class DefaultState implements State {
 			}
 		}
 
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 8; i++) {
 			sheet.autoSizeColumn(i, false);
 		}
 	}
