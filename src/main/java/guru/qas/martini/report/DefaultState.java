@@ -18,6 +18,7 @@ package guru.qas.martini.report;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -26,17 +27,19 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+import com.google.gson.JsonObject;
 
 @SuppressWarnings("WeakerAccess")
 public class DefaultState implements State {
 
 	private final Multimap<String, HSSFCell> statii;
 	private final Multimap<String, HSSFCell> themes;
+	private final Set<JsonObject> suites;
 
 	private List<HSSFCell> longestExecutionCells;
 	private long longestExecution;
@@ -44,6 +47,7 @@ public class DefaultState implements State {
 	protected DefaultState() {
 		statii = ArrayListMultimap.create();
 		themes = ArrayListMultimap.create();
+		suites = Sets.newHashSet();
 		longestExecutionCells = new ArrayList<>();
 		longestExecution = 0;
 	}
@@ -108,12 +112,18 @@ public class DefaultState implements State {
 					}
 					else if (i == firstCellNum) {
 						borderStyle.setBorderLeft(BorderStyle.MEDIUM);
-					} else if (i == lastCellNum - 1) {
+					}
+					else if (i == lastCellNum - 1) {
 						borderStyle.setBorderRight(BorderStyle.MEDIUM);
 					}
 					rowCell.setCellStyle(borderStyle);
 				}
 			}
 		}
+	}
+
+	@Override
+	public void addSuite(JsonObject suite) {
+		suites.add(suite);
 	}
 }

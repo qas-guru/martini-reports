@@ -27,7 +27,6 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import guru.qas.martini.report.State;
 
@@ -57,6 +56,7 @@ public class TagColumn implements TraceabilityColumn {
 	}
 
 	protected void doSomething(HSSFCell cell, JsonArray array) {
+
 		int size = array.size();
 		List<String> tags = Lists.newArrayListWithExpectedSize(size);
 		for (int i = 0; i < size; i++) {
@@ -78,7 +78,7 @@ public class TagColumn implements TraceabilityColumn {
 		String tag = null;
 		if (null != name) {
 			JsonElement argumentElement = entry.get(KEY_ARGUMENT);
-			String argument = null == argumentElement ? "" : argumentElement.getAsString();
+			String argument = null == argumentElement ? "" : String.format("\"%s\"", argumentElement.getAsString());
 			tag = String.format("@%s(%s)", name, argument);
 		}
 		return tag;

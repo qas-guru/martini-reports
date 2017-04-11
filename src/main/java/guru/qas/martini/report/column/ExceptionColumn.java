@@ -14,21 +14,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package guru.qas.martini.report;
+package guru.qas.martini.report.column;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonObject;
 
-public interface State {
+import guru.qas.martini.report.State;
 
-	void setStatus(HSSFCell cell, String status);
+@SuppressWarnings("WeakerAccess")
+@Component
+public class ExceptionColumn implements TraceabilityColumn {
 
-	void setThemes(HSSFCell cell, Iterable<String> themes);
+	protected static final String LABEL = "Exception";
 
-	void setExecutionTime(HSSFCell cell, long executionTime);
+	protected ExceptionColumn() {
+	}
 
-	void addSuite(JsonObject suite);
+	@Override
+	public String getLabel() {
+		return LABEL;
+	}
 
-	void updateWorkbook();
+	@Override
+	public void doSomething(State state, HSSFCell cell, JsonObject o) {
+	}
 }

@@ -16,9 +16,11 @@
 		<ref bean="featureNameColumn"/>
 		<ref bean="scenarioNameColumn"/>
 		<ref bean="statusColumn"/>
+		<ref bean="exceptionColumn"/>
 		<ref bean="executionTimeColumn"/>
 		<ref bean="scenarioDescriptionColumn"/>
 		<ref bean="locationColumn"/>
 		<ref bean="tagColumn"/>
+		<ref bean="suiteColumn"/>
 	</util:list>
 </beans>

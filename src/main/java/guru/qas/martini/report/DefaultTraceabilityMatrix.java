@@ -32,6 +32,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -119,17 +120,7 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		HSSFRow row = sheet.createRow(0);
 
 		HSSFWorkbook workbook = sheet.getWorkbook();
-		HSSFCellStyle style = workbook.createCellStyle();
-		style.setBorderBottom(BorderStyle.MEDIUM);
-
-		HSSFFont font = workbook.createFont();
-		font.setBold(true);
-		font.setFontName("Arial");
-		short fontHeight = font.getFontHeight();
-		double v = fontHeight * 1.5;
-		font.setFontHeight((short) Math.round(v));
-		style.setFont(font);
-
+		HSSFCellStyle style = getHeaderStyle(workbook);
 
 		for (int i = 0; i < columns.size(); i++) {
 			TraceabilityColumn column = columns.get(i);
@@ -139,6 +130,39 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 			cell.setCellValue(label);
 			cell.setCellStyle(style);
 		}
+	}
+
+	protected HSSFCellStyle getHeaderStyle(HSSFWorkbook workbook) {
+		HSSFCellStyle style = workbook.createCellStyle();
+		style.setBorderBottom(BorderStyle.MEDIUM);
+		HSSFFont headerFont = getHeaderFont(workbook);
+		style.setFont(headerFont);
+		return style;
+	}
+
+	protected HSSFFont getHeaderFont(HSSFWorkbook workbook) {
+		HSSFFont font = workbook.findFont(
+			true, // bold
+			IndexedColors.BLACK.getIndex(),
+			(short) 300,
+			HSSFFont.FONT_ARIAL,
+			false, // italic
+			false, // strikeout
+			HSSFFont.SS_NONE,
+			HSSFFont.U_NONE);
+
+		if (null == font) {
+			font = workbook.createFont();
+			font.setBold(true);
+			font.setColor(IndexedColors.BLACK.getIndex());
+			font.setFontHeight((short) 300);
+			font.setFontName(HSSFFont.FONT_ARIAL);
+			font.setItalic(false);
+			font.setStrikeout(false);
+			font.setTypeOffset(HSSFFont.SS_NONE);
+			font.setUnderline(HSSFFont.U_NONE);
+		}
+		return font;
 	}
 
 	protected void doSomething(State state, HSSFSheet sheet, JsonObject object) {
@@ -154,7 +178,6 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 
 	protected void resizeColumns(HSSFSheet sheet) {
 		for (int i = 0; i < columns.size(); i++) {
-			TraceabilityColumn traceabilityColumn = columns.get(i);
 			sheet.autoSizeColumn(i);
 		}
 	}
