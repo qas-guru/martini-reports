@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="967039fd-b343-4c40-b737-0ca550a408b3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultState.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/State.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/ExecutionTimeColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/ScenarioNameColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/StatusColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/ThemeColumn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/DefaultTraceabilityMatrix.class" afterPath="$PROJECT_DIR$/target/classes/guru/qas/martini/report/DefaultTraceabilityMatrix.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultTraceabilityMatrix.java" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultTraceabilityMatrix.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/FeatureNameColumn.java" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/FeatureNameColumn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/TraceabilityColumn.java" afterPath="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/TraceabilityColumn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/martiniContext.xml" afterPath="$PROJECT_DIR$/src/main/resources/martiniContext.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -72,11 +62,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DefaultState.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DefaultState.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="2" selection-end-line="89" selection-end-column="74" />
+            <state relative-caret-position="323">
+              <caret line="75" column="25" lean-forward="true" selection-start-line="75" selection-start-column="25" selection-end-line="75" selection-end-column="25" />
               <folding>
                 <element signature="e#1693#1694#0" expanded="true" />
                 <element signature="e#1724#1725#0" expanded="true" />
@@ -118,11 +108,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DefaultTraceabilityMatrix.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DefaultTraceabilityMatrix.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultTraceabilityMatrix.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="121" column="46" lean-forward="false" selection-start-line="121" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+            <state relative-caret-position="323">
+              <caret line="133" column="40" lean-forward="false" selection-start-line="133" selection-start-column="40" selection-end-line="133" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -185,12 +175,12 @@
         <option value="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/DefaultState.java" />
         <option value="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/ScenarioNameColumn.java" />
         <option value="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/StatusColumn.java" />
-        <option value="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultTraceabilityMatrix.java" />
         <option value="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/FeatureNameColumn.java" />
         <option value="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/State.java" />
         <option value="$PROJECT_DIR$/src/main/resources/martiniContext.xml" />
         <option value="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/column/ExecutionTimeColumn.java" />
         <option value="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultState.java" />
+        <option value="$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultTraceabilityMatrix.java" />
       </list>
     </option>
   </component>
@@ -847,7 +837,7 @@
       <option name="presentableId" value="Default" />
       <updated>1491600729528</updated>
       <workItem from="1491600732591" duration="11416000" />
-      <workItem from="1491853136154" duration="14295000" />
+      <workItem from="1491853136154" duration="14992000" />
     </task>
     <task id="LOCAL-00001" summary="Adding columns and Spring startup.">
       <created>1491852276185</created>
@@ -891,11 +881,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491861396315</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Applying styles to output.">
+      <created>1491868386619</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1491868386619</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25711000" />
+    <option name="totallyTimeSpent" value="26408000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -933,6 +930,7 @@
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29399142" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299566" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -940,7 +938,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299566" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -954,7 +951,8 @@
     <MESSAGE value="Reading both scenarios from merged json inputstream." />
     <MESSAGE value="Updating ignore." />
     <MESSAGE value="Correct martini parsing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Correct martini parsing." />
+    <MESSAGE value="Applying styles to output." />
+    <option name="LAST_COMMIT_MESSAGE" value="Applying styles to output." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1300,14 +1298,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultTraceabilityMatrix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="121" column="46" lean-forward="false" selection-start-line="121" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/guru/qas/martini/report/State.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="265">
@@ -1334,12 +1324,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="2" selection-end-line="89" selection-end-column="74" />
+        <state relative-caret-position="323">
+          <caret line="75" column="25" lean-forward="true" selection-start-line="75" selection-start-column="25" selection-end-line="75" selection-end-column="25" />
           <folding>
             <element signature="e#1693#1694#0" expanded="true" />
             <element signature="e#1724#1725#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/guru/qas/martini/report/DefaultTraceabilityMatrix.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="133" column="40" lean-forward="false" selection-start-line="133" selection-start-column="40" selection-end-line="133" selection-end-column="40" />
+          <folding />
         </state>
       </provider>
     </entry>

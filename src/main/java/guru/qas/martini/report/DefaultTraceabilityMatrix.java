@@ -76,6 +76,7 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 			line = null == line ? null : lineReader.readLine();
 		}
 
+		resizeColumns(sheet);
 		state.updateWorkbook();
 		workbook.write(outputStream);
 		outputStream.flush();
@@ -124,7 +125,11 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		HSSFFont font = workbook.createFont();
 		font.setBold(true);
 		font.setFontName("Arial");
+		short fontHeight = font.getFontHeight();
+		double v = fontHeight * 1.5;
+		font.setFontHeight((short) Math.round(v));
 		style.setFont(font);
+
 
 		for (int i = 0; i < columns.size(); i++) {
 			TraceabilityColumn column = columns.get(i);
@@ -144,6 +149,13 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 			HSSFCell cell = row.createCell(i);
 			TraceabilityColumn column = columns.get(i);
 			column.doSomething(state, cell, object);
+		}
+	}
+
+	protected void resizeColumns(HSSFSheet sheet) {
+		for (int i = 0; i < columns.size(); i++) {
+			TraceabilityColumn traceabilityColumn = columns.get(i);
+			sheet.autoSizeColumn(i);
 		}
 	}
 }
