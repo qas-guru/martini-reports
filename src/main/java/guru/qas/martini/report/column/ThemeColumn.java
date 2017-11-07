@@ -48,11 +48,11 @@ public class ThemeColumn implements TraceabilityColumn {
 	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		JsonArray categories = o.getAsJsonArray(KEY);
 		if (null != categories) {
-			doSomething(state, cell, categories);
+			addResult(state, cell, categories);
 		}
 	}
 
-	protected void doSomething(State state, HSSFCell cell, JsonArray categories) {
+	protected void addResult(State state, HSSFCell cell, JsonArray categories) {
 		int size = categories.size();
 
 		LinkedHashSet<String> ordered = new LinkedHashSet<>();

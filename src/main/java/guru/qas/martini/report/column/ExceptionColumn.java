@@ -52,7 +52,8 @@ public class ExceptionColumn implements TraceabilityColumn {
 		for (int i = 0; null == value && i < size; i++) {
 			JsonElement element = array.get(i);
 			JsonObject step = element.getAsJsonObject();
-			JsonPrimitive primitive = step.getAsJsonPrimitive(KEY_EXCEPTION);
+			JsonElement keyElement = step.get(KEY_EXCEPTION);
+			JsonPrimitive primitive = null != keyElement && keyElement.isJsonPrimitive() ? keyElement.getAsJsonPrimitive() : null;
 			String stackTrace = null == primitive ? null : primitive.getAsString().trim();
 			value = null != stackTrace && !stackTrace.isEmpty() ? stackTrace: null;
 		}

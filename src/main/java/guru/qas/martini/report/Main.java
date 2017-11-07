@@ -36,6 +36,7 @@ import java.util.Vector;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
@@ -53,7 +54,7 @@ public class Main {
 	protected Main() {
 	}
 
-	protected void doSomething(CommandLine commandLine) throws IOException, URISyntaxException {
+	protected void createReport(CommandLine commandLine) throws IOException, URISyntaxException {
 		try (Reader reader = getReader(commandLine);
 			 OutputStream out = getOutputStream(commandLine)) {
 
@@ -122,22 +123,27 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException, ParseException, URISyntaxException {
-
-		CommandLineParser parser = new DefaultParser();
 		Options options = getOptions();
-		CommandLine commandLine = parser.parse(options, args);
+		CommandLine commandLine = getCommandLine(args, options);
 
-		Main application = new Main();
-		application.doSomething(commandLine);
+		if (null == commandLine || commandLine.hasOption('h')) {
+			printUsageSynopsis(options);
+		}
+		else {
+			new Main().createReport(commandLine);
+		}
 	}
 
 	protected static Options getOptions() {
 		Options options = new Options();
 
+		Option option = getHelpOption();
+		options.addOption(option);
+
 		OptionGroup urlGroup = getURLOptions();
 		options.addOptionGroup(urlGroup);
 
-		Option option = getOutputFileOption();
+		option = getOutputFileOption();
 		options.addOption(option);
 
 		option = getOverwriteOption();
@@ -147,6 +153,13 @@ public class Main {
 		options.addOption(option);
 
 		return options;
+	}
+
+	protected static Option getHelpOption() {
+		return Option.builder("h")
+			.required(false).hasArg(false).longOpt("help").numberOfArgs(0)
+			.desc("print this message")
+			.build();
 	}
 
 	protected static OptionGroup getURLOptions() {
@@ -182,5 +195,23 @@ public class Main {
 		return Option.builder("s")
 			.required(false).hasArg(true).longOpt("springConfiguration")
 			.desc("Spring application file").build();
+	}
+
+	protected static CommandLine getCommandLine(String[] args, Options options) {
+		CommandLineParser parser = new DefaultParser();
+
+		CommandLine commandLine = null;
+		try {
+			commandLine = parser.parse(options, args, false);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return commandLine;
+	}
+
+	protected static void printUsageSynopsis(Options options) {
+		HelpFormatter formatter = new HelpFormatter();
+		formatter.printHelp(Main.class.getName(), options);
 	}
 }
