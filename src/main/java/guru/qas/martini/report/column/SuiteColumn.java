@@ -31,7 +31,6 @@ public class SuiteColumn implements TraceabilityColumn {
 
 	protected static final String LABEL = "Suite";
 	protected static final String KEY_SUITE = "suite";
-	protected static final String KEY_ID = "id";
 
 	protected SuiteColumn() {
 	}
@@ -42,15 +41,10 @@ public class SuiteColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void addResult(State state, HSSFCell cell, JsonObject o) {
-		JsonElement element = o.get(KEY_SUITE);
-		JsonObject suite = null == element ? null : element.getAsJsonObject();
-
-		element = null == suite ? null : suite.get(KEY_ID);
-		String id = null == element ? null : element.getAsString();
-
-		HSSFRichTextString richTextString = new HSSFRichTextString(id);
+	public void addResult(State state, HSSFCell cell, JsonObject result) {
+		JsonElement element = result.get(KEY_SUITE);
+		String suite = null == element ? null : element.getAsString();
+		HSSFRichTextString richTextString = new HSSFRichTextString(suite);
 		cell.setCellValue(richTextString);
-		state.addSuite(suite);
 	}
 }

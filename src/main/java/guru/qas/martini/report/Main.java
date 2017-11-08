@@ -40,11 +40,12 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -54,13 +55,23 @@ public class Main {
 	protected Main() {
 	}
 
-	protected void createReport(CommandLine commandLine) throws IOException, URISyntaxException {
-		try (Reader reader = getReader(commandLine);
-			 OutputStream out = getOutputStream(commandLine)) {
+	protected void createReport(CommandLine commandLine) throws Exception {
+		ApplicationContext context = getApplicationContext(commandLine);
+		createReport(commandLine, context);
+	}
 
-			ApplicationContext context = getApplicationContext(commandLine);
-			TraceabilityMatrix bean = context.getBean(TraceabilityMatrix.class);
-			bean.createReport(reader, out);
+	protected void createReport(CommandLine commandLine, ApplicationContext context) throws Exception {
+		Gson gson = context.getBean(Gson.class);
+		TraceabilityMatrix matrix = context.getBean(TraceabilityMatrix.class);
+		createReport(commandLine, gson, matrix);
+	}
+
+	protected void createReport(CommandLine commandLine, Gson gson, TraceabilityMatrix matrix) throws Exception {
+		try (Reader reader = getReader(commandLine);
+			 JsonReader jsonReader = gson.newJsonReader(reader);
+			 OutputStream outputStream = getOutputStream(commandLine)) {
+			jsonReader.setLenient(true);
+			matrix.createReport(jsonReader, outputStream);
 		}
 	}
 
@@ -122,7 +133,7 @@ public class Main {
 		return new ClassPathXmlApplicationContext(configuration);
 	}
 
-	public static void main(String[] args) throws IOException, ParseException, URISyntaxException {
+	public static void main(String[] args) throws Exception {
 		Options options = getOptions();
 		CommandLine commandLine = getCommandLine(args, options);
 

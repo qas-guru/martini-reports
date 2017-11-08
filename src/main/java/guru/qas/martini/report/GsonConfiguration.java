@@ -16,12 +16,17 @@ limitations under the License.
 
 package guru.qas.martini.report;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import com.google.gson.stream.JsonReader;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-public interface TraceabilityMatrix {
+@Configuration
+public class GsonConfiguration {
 
-	void createReport(JsonReader reader, OutputStream outputStream) throws IOException;
+	@Bean
+	Gson getGson() {
+		return new GsonBuilder().setLenient().serializeNulls().create();
+	}
 }

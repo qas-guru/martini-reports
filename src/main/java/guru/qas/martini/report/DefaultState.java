@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,12 +51,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @SuppressWarnings("WeakerAccess")
 public class DefaultState implements State {
+	protected final static String KEY_FEATURE = "feature";
 
 	private final Multimap<String, HSSFCell> statii;
 	private final Multimap<String, HSSFCell> themes;
-	private final Set<JsonObject> suites;
+	private final Map<String, JsonObject> suites;
+	private final Map<String, JsonObject> features;
 
 	private List<HSSFCell> longestExecutionCells;
 	private long longestExecution;
@@ -63,7 +68,8 @@ public class DefaultState implements State {
 	protected DefaultState() {
 		statii = ArrayListMultimap.create();
 		themes = ArrayListMultimap.create();
-		suites = Sets.newHashSet();
+		suites = new LinkedHashMap<>();
+		features = new LinkedHashMap<>();
 		longestExecutionCells = new ArrayList<>();
 		longestExecution = 0;
 	}
@@ -186,10 +192,7 @@ public class DefaultState implements State {
 				HSSFCellStyle cellStyle = cell.getCellStyle();
 				HSSFWorkbook workbook = cell.getSheet().getWorkbook();
 				HSSFCellStyle clone = workbook.createCellStyle();
-				/*
-				XSSFCellStyle styleSubHeader = (XSSFCellStyle) wb.createCellStyle();
-				styleSubHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-				 */
+
 				clone.cloneStyleFrom(cellStyle);
 				clone.setFillForegroundColor(color);
 				clone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -297,8 +300,31 @@ public class DefaultState implements State {
 
 	@Override
 	public void addSuite(JsonObject suite) {
-		suites.add(suite);
+		checkNotNull(suite, "null JsonObject");
+		String id = getId(suite);
+		suites.put(id, suite);
 	}
+
+	protected String getId(JsonObject object) {
+		JsonPrimitive primitive = object.getAsJsonPrimitive("id");
+		return primitive.getAsString();
+	}
+
+	@Override
+	public void addFeature(JsonObject feature) {
+		checkNotNull(feature, "null JsonObject");
+		String id = getId(feature);
+		features.put(id, feature);
+	}
+
+	@Override
+	public JsonObject getFeature(JsonObject result) {
+		checkNotNull(result, "null JsonObject");
+		JsonElement element = result.get(KEY_FEATURE);
+		String featureId = element.getAsString();
+		return features.get(featureId);
+	}
+
 
 	@Override
 	public void updateSuites(HSSFSheet sheet) {
@@ -313,15 +339,14 @@ public class DefaultState implements State {
 		row.createCell(6, CellType.STRING).setCellValue("Profiles");
 		row.createCell(7, CellType.STRING).setCellValue("Environment Variables");
 
-
-		for (JsonObject suite : suites) {
+		for (Map.Entry<String, JsonObject> mapEntry : suites.entrySet()) {
 			row = sheet.createRow(sheet.getLastRowNum() + 1);
 
-			JsonPrimitive primitive = suite.getAsJsonPrimitive("id");
-			String id = null == primitive ? null : primitive.getAsString();
+			String id = mapEntry.getKey();
 			row.createCell(0, CellType.STRING).setCellValue(id);
 
-			primitive = suite.getAsJsonPrimitive("startTimestamp");
+			JsonObject suite = mapEntry.getValue();
+			JsonPrimitive primitive = suite.getAsJsonPrimitive("startTimestamp");
 			Long timestamp = null == primitive ? null : primitive.getAsLong();
 
 			HSSFCell cell = row.createCell(1);
@@ -371,9 +396,9 @@ public class DefaultState implements State {
 			Map<String, String> index = new TreeMap<>();
 			if (null != environmentVariables) {
 				Set<Map.Entry<String, JsonElement>> entries = environmentVariables.entrySet();
-				for (Map.Entry<String, JsonElement> mapEntry : entries) {
-					String key = mapEntry.getKey();
-					JsonElement element = mapEntry.getValue();
+				for (Map.Entry<String, JsonElement> environmentEntry : entries) {
+					String key = environmentEntry.getKey();
+					JsonElement element = environmentEntry.getValue();
 					String value = null == element ? "" : element.getAsString();
 					index.put(key, value);
 				}

@@ -31,7 +31,11 @@ public interface State {
 
 	void addSuite(JsonObject suite);
 
+	void addFeature(JsonObject feature);
+
 	void updateResults();
 
 	void updateSuites(HSSFSheet sheet);
+
+	JsonObject getFeature(JsonObject result);
 }

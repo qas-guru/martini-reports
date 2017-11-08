@@ -18,7 +18,6 @@ package guru.qas.martini.report;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Reader;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -30,45 +29,70 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.LineReader;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 
 import guru.qas.martini.report.column.TraceabilityColumn;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static guru.qas.martini.report.JsonObjectType.*;
 
 @SuppressWarnings("WeakerAccess")
 @Configurable
 public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTraceabilityMatrix.class);
 
+	protected final Gson gson;
 	protected final ImmutableList<TraceabilityColumn> columns;
 
 	@Autowired
-	protected DefaultTraceabilityMatrix(Iterable<TraceabilityColumn> columns) {
+	protected DefaultTraceabilityMatrix(Gson gson, Iterable<TraceabilityColumn> columns) {
+		this.gson = gson;
 		this.columns = ImmutableList.copyOf(columns);
 	}
 
 	@Override
-	public void createReport(Reader reader, OutputStream outputStream) throws IOException {
+	public void createReport(JsonReader reader, OutputStream outputStream) throws IOException {
+		checkNotNull(reader, "null JsonReader");
+		checkNotNull(outputStream, "null OutputStream");
+
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet("Results");
 		addHeader(sheet);
 
-		LineReader lineReader = new LineReader(reader);
 		State state = new DefaultState();
-		for (String line = lineReader.readLine(); null != line; ) {
-			MartiniProcessor martiniProcessor = new MartiniProcessor();
-			while (null != line && martiniProcessor.processLine(line)) {
-				line = lineReader.readLine();
-			}
-			JsonObject result = martiniProcessor.getResult();
-			addResult(state, sheet, result);
-			line = null == line ? null : lineReader.readLine();
-		}
+		while (reader.hasNext() && !isEndOfDocument(reader)) {
+			JsonElement next = gson.fromJson(reader, JsonElement.class);
+			if (null != next && next.isJsonObject()) {
+				JsonObject object = next.getAsJsonObject();
 
+				switch(JsonObjectType.evaluate(object)) {
+					case SUITE:
+						JsonObject suite = SUITE.get(object);
+						state.addSuite(suite);
+						break;
+					case FEATURE:
+						JsonObject feature = FEATURE.get(object);
+						state.addFeature(feature);
+						break;
+					case RESULT:
+						JsonObject result = RESULT.get(object);
+						addResult(state, sheet, result);
+						break;
+					default:
+						LOGGER.warn("skipping unrecognized JsonObject: {}", object);
+				}
+			}
+		}
 
 		state.updateResults();
 		resizeColumns(sheet);
@@ -80,6 +104,10 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		outputStream.flush();
 	}
 
+	protected boolean isEndOfDocument(JsonReader reader) throws IOException {
+		JsonToken token = reader.peek();
+		return JsonToken.END_DOCUMENT == token;
+	}
 	protected void addHeader(HSSFSheet sheet) {
 		HSSFRow row = sheet.createRow(0);
 

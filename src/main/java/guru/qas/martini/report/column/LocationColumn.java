@@ -31,7 +31,6 @@ public class LocationColumn implements TraceabilityColumn {
 
 	protected static final String LABEL = "Location";
 	protected static final String KEY_LINE = "line";
-	protected static final String KEY_FEATURE = "feature";
 	protected static final String KEY_LOCATION = "location";
 
 	protected LocationColumn() {
@@ -45,7 +44,7 @@ public class LocationColumn implements TraceabilityColumn {
 	@Override
 	public void addResult(State state, HSSFCell cell, JsonObject o) {
 		String line = getLine(o);
-		String relative = getResource(o);
+		String relative = getResource(state, o);
 
 		StringBuilder builder = new StringBuilder(null == relative ? "" : relative);
 		if (null != line) {
@@ -64,14 +63,9 @@ public class LocationColumn implements TraceabilityColumn {
 		return null == element ? null : element.getAsString();
 	}
 
-	protected String getResource(JsonObject o) {
-		JsonElement element = o.get(KEY_FEATURE);
-		JsonObject asObject = null == element ? null : element.getAsJsonObject();
-
-		element = null == asObject ? null : asObject.get(KEY_LOCATION);
-		String resource = null == element ? null : element.getAsString();
-
-		Integer index = null == resource ? null : resource.lastIndexOf('!');
-		return null != index && index < resource.length() - 1 ? resource.substring(index + 1) : resource;
+	protected String getResource(State state, JsonObject result) {
+		JsonObject feature = state.getFeature(result);
+		JsonElement element = feature.get(KEY_LOCATION);
+		return null == element ? null : element.getAsString();
 	}
 }
