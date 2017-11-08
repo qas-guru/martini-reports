@@ -29,6 +29,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -134,6 +135,8 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 
 		for (int i = 0; i < columns.size(); i++) {
 			HSSFCell cell = row.createCell(i);
+			HSSFCellStyle cellStyle = cell.getCellStyle();
+			cellStyle.setVerticalAlignment(VerticalAlignment.TOP);
 			TraceabilityColumn column = columns.get(i);
 			column.addResult(state, cell, object);
 		}

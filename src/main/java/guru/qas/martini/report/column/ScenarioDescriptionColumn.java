@@ -16,13 +16,13 @@ limitations under the License.
 
 package guru.qas.martini.report.column;
 
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import guru.qas.martini.report.State;
 
@@ -43,10 +43,9 @@ public class ScenarioDescriptionColumn implements TraceabilityColumn {
 
 	@Override
 	public void addResult(State state, HSSFCell cell, JsonObject o) {
-		JsonPrimitive primitive = o.getAsJsonPrimitive(KEY);
-		String value = null == primitive ? "" : primitive.getAsString();
-
-		String normalized = value.trim().replaceAll("\\s+", " ");
+		JsonElement element = o.get(KEY);
+		String description = element.isJsonPrimitive() ? element.getAsString() : null;
+		String normalized = null == description ? null : description.trim().replaceAll("\\s+", " ");
 		String wrapped = WordUtils.wrap(normalized, 60);
 		HSSFRichTextString richTextString = new HSSFRichTextString(wrapped);
 		cell.setCellValue(richTextString);

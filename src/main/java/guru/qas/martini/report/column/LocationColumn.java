@@ -32,7 +32,7 @@ public class LocationColumn implements TraceabilityColumn {
 	protected static final String LABEL = "Location";
 	protected static final String KEY_LINE = "line";
 	protected static final String KEY_FEATURE = "feature";
-	protected static final String KEY_RESOURCE = "resource";
+	protected static final String KEY_LOCATION = "location";
 
 	protected LocationColumn() {
 	}
@@ -68,7 +68,7 @@ public class LocationColumn implements TraceabilityColumn {
 		JsonElement element = o.get(KEY_FEATURE);
 		JsonObject asObject = null == element ? null : element.getAsJsonObject();
 
-		element = null == asObject ? null : asObject.get(KEY_RESOURCE);
+		element = null == asObject ? null : asObject.get(KEY_LOCATION);
 		String resource = null == element ? null : element.getAsString();
 
 		Integer index = null == resource ? null : resource.lastIndexOf('!');

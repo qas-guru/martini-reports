@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -36,6 +36,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -185,6 +186,10 @@ public class DefaultState implements State {
 				HSSFCellStyle cellStyle = cell.getCellStyle();
 				HSSFWorkbook workbook = cell.getSheet().getWorkbook();
 				HSSFCellStyle clone = workbook.createCellStyle();
+				/*
+				XSSFCellStyle styleSubHeader = (XSSFCellStyle) wb.createCellStyle();
+				styleSubHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+				 */
 				clone.cloneStyleFrom(cellStyle);
 				clone.setFillForegroundColor(color);
 				clone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -325,6 +330,7 @@ public class DefaultState implements State {
 				HSSFCellStyle cellStyle = workbook.createCellStyle();
 				HSSFCreationHelper creationHelper = workbook.getCreationHelper();
 				cellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("m/d/yy h:mm"));
+				cellStyle.setVerticalAlignment(VerticalAlignment.TOP);
 				cell.setCellValue(new Date(timestamp));
 				cell.setCellStyle(cellStyle);
 			}
@@ -361,18 +367,18 @@ public class DefaultState implements State {
 			}
 
 			cell = row.createCell(7);
-			JsonObject environmentVariables = suite.getAsJsonObject("environmentVariables");
-			Map<String, String> environment = new LinkedHashMap<>();
+			JsonObject environmentVariables = suite.getAsJsonObject("environment");
+			Map<String, String> index = new TreeMap<>();
 			if (null != environmentVariables) {
 				Set<Map.Entry<String, JsonElement>> entries = environmentVariables.entrySet();
 				for (Map.Entry<String, JsonElement> mapEntry : entries) {
 					String key = mapEntry.getKey();
 					JsonElement element = mapEntry.getValue();
 					String value = null == element ? "" : element.getAsString();
-					environment.put(key, value);
+					index.put(key, value);
 				}
 
-				String variablesValue = Joiner.on('\n').withKeyValueSeparator('=').useForNull("").join(environment);
+				String variablesValue = Joiner.on('\n').withKeyValueSeparator('=').useForNull("").join(index);
 				cell.setCellValue(variablesValue);
 			}
 		}
