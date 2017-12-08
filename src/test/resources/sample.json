@@ -1,0 +1,562 @@
+[
+  {
+    "suite": {
+      "id": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "startTimestamp": 1512752457359,
+      "name": "org.springframework.context.support.ClassPathXmlApplicationContext@3cd1f1c8",
+      "host": {
+        "name": "Pennys-MacBook-Pro-2.local",
+        "ip": "172.16.0.105",
+        "username": "pennycurich"
+      },
+      "profiles": [],
+      "environment": {
+        "PATH": "/Users/pennycurich/.local/bin:/Users/pennycurich/Downloads/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin",
+        "SHELL": "/bin/bash",
+        "USER": "pennycurich",
+        "VERSIONER_PYTHON_PREFER_32_BIT": "no",
+        "TMPDIR": "/var/folders/b9/fs5cw2g91tg_gznsrz9rjfs40000gn/T/",
+        "SSH_AUTH_SOCK": "/private/tmp/com.apple.launchd.Io6phjKgrR/Listeners",
+        "DISPLAY": "/private/tmp/com.apple.launchd.pMnWHqPz3D/org.macosforge.xquartz:0",
+        "XPC_FLAGS": "0x0",
+        "VERSIONER_PYTHON_VERSION": "2.7",
+        "__CF_USER_TEXT_ENCODING": "0x1F5:0x0:0x0",
+        "Apple_PubSub_Socket_Render": "/private/tmp/com.apple.launchd.pgQQpJZXdq/Render",
+        "LOGNAME": "pennycurich",
+        "LC_CTYPE": "en_US.UTF-8",
+        "PWD": "/Users/pennycurich/projects/sabbatical/martini-standalone",
+        "XPC_SERVICE_NAME": "com.jetbrains.intellij.129632",
+        "JAVA_MAIN_CLASS_17124": "guru.qas.martini.standalone.Main",
+        "HOME": "/Users/pennycurich"
+      }
+    }
+  },
+  {
+    "feature": {
+      "id": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "name": "Multithreaded Martini Execution",
+      "description": "  Ensures that the standalone engine executes Scenarios in parallel.",
+      "location": "file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature]"
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459298,
+      "endTimestamp": 1512752459300,
+      "threadGroup": "main",
+      "thread": "ForkJoinPool-1-worker-4",
+      "id": "Multithreaded_Martini_Execution:Five:24",
+      "line": 24,
+      "name": "Five",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459299,
+          "endTimestamp": 1512752459300,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 25,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 25: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 26,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 27,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459298,
+      "endTimestamp": 1512752459300,
+      "threadGroup": "main",
+      "thread": "ForkJoinPool-1-worker-5",
+      "id": "Multithreaded_Martini_Execution:Six:29",
+      "line": 29,
+      "name": "Six",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459299,
+          "endTimestamp": 1512752459300,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 30,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 30: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 31,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 32,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459298,
+      "endTimestamp": 1512752459300,
+      "threadGroup": "main",
+      "thread": "ForkJoinPool-1-worker-3",
+      "id": "Multithreaded_Martini_Execution:Four:19",
+      "line": 19,
+      "name": "Four",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459299,
+          "endTimestamp": 1512752459300,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 20,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 20: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 21,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 22,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459298,
+      "endTimestamp": 1512752459300,
+      "threadGroup": "main",
+      "thread": "ForkJoinPool-1-worker-2",
+      "id": "Multithreaded_Martini_Execution:Three:14",
+      "line": 14,
+      "name": "Three",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459299,
+          "endTimestamp": 1512752459300,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 15,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 15: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 16,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 17,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459298,
+      "endTimestamp": 1512752459300,
+      "threadGroup": "main",
+      "thread": "ForkJoinPool-1-worker-0",
+      "id": "Multithreaded_Martini_Execution:Nine:44",
+      "line": 44,
+      "name": "Nine",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459299,
+          "endTimestamp": 1512752459300,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 45,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 45: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 46,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 47,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459298,
+      "endTimestamp": 1512752459300,
+      "threadGroup": "main",
+      "thread": "ForkJoinPool-1-worker-7",
+      "id": "Multithreaded_Martini_Execution:Eight:39",
+      "line": 39,
+      "name": "Eight",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459299,
+          "endTimestamp": 1512752459300,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 40,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 40: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 41,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 42,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459298,
+      "endTimestamp": 1512752459300,
+      "threadGroup": "main",
+      "thread": "ForkJoinPool-1-worker-6",
+      "id": "Multithreaded_Martini_Execution:Seven:34",
+      "line": 34,
+      "name": "Seven",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459299,
+          "endTimestamp": 1512752459300,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 35,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 35: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 36,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 37,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459298,
+      "endTimestamp": 1512752459300,
+      "threadGroup": "main",
+      "thread": "main",
+      "id": "Multithreaded_Martini_Execution:Two:9",
+      "line": 9,
+      "name": "Two",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459299,
+          "endTimestamp": 1512752459300,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 10,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 10: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool.awaitQuiescence(ForkJoinPool.java:3185)\n\tat guru.qas.martini.standalone.harness.DefaultEngine.executeSuite(DefaultEngine.java:74)\n\tat guru.qas.martini.standalone.harness.DefaultEngine.executeSuite(DefaultEngine.java:65)\n\tat guru.qas.martini.standalone.Main.executeSuite(Main.java:57)\n\tat guru.qas.martini.standalone.Main.executeSuite(Main.java:47)\n\tat guru.qas.martini.standalone.Main.main(Main.java:107)\n\tat guru.qas.martini.standalone.Main.main(Main.java:93)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 11,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 12,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459298,
+      "endTimestamp": 1512752459300,
+      "threadGroup": "main",
+      "thread": "ForkJoinPool-1-worker-1",
+      "id": "Multithreaded_Martini_Execution:One:4",
+      "line": 4,
+      "name": "One",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459299,
+          "endTimestamp": 1512752459300,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 5,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 5: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 6,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 7,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  },
+  {
+    "martini": {
+      "suite": "4cfe399a-fc60-408c-a106-60b095dab736",
+      "feature": "c2fbf9d8-4cf6-4b2d-83a9-8706a3a2c17b",
+      "startTimestamp": 1512752459309,
+      "endTimestamp": 1512752459310,
+      "threadGroup": "main",
+      "thread": "ForkJoinPool-1-worker-4",
+      "id": "Multithreaded_Martini_Execution:Ten:49",
+      "line": 49,
+      "name": "Ten",
+      "description": null,
+      "categories": [],
+      "tags": [],
+      "status": "SKIPPED",
+      "steps": [
+        {
+          "startTimestamp": 1512752459309,
+          "endTimestamp": 1512752459310,
+          "keyword": "Given ",
+          "text": "a precondition",
+          "line": 50,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": "guru.qas.martini.standalone.exception.UnimplementedStepException: unimplemented step: file [/Users/pennycurich/projects/sabbatical/martini-standalone/src/test/resources/test.feature] line 50: @Given a precondition\n\tat guru.qas.martini.standalone.harness.MartiniTask.assertImplemented(MartiniTask.java:151)\n\tat guru.qas.martini.standalone.harness.MartiniTask.execute(MartiniTask.java:128)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:104)\n\tat guru.qas.martini.standalone.harness.MartiniTask.call(MartiniTask.java:48)\n\tat java.util.concurrent.ForkJoinTask$AdaptedCallable.exec(ForkJoinTask.java:1424)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)\n"
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "When ",
+          "text": "something happens",
+          "line": 51,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        },
+        {
+          "startTimestamp": null,
+          "endTimestamp": null,
+          "keyword": "Then ",
+          "text": "outcome is evaluated",
+          "line": 52,
+          "method": null,
+          "status": "SKIPPED",
+          "embedded": [],
+          "exception": null
+        }
+      ]
+    }
+  }
+]
