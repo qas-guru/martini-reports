@@ -93,7 +93,7 @@ public class Main {
 		return getReader(resources);
 	}
 
-	protected static Reader getReader(Resource[] resources) throws IOException {
+	protected Reader getReader(Resource[] resources) {
 		ThrowingFunction<Resource, InputStream> inputStreamFunction = Resource::getInputStream;
 		Iterator<InputStream> iterator = Arrays.stream(resources).map(inputStreamFunction).iterator();
 		Enumeration<InputStream> enumeration = Iterators.asEnumeration(iterator);

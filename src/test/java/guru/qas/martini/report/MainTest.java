@@ -17,72 +17,89 @@ limitations under the License.
 package guru.qas.martini.report;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.io.output.TeeOutputStream;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import com.google.common.io.ByteStreams;
+import org.testng.reporters.Files;
 
 import static com.google.common.base.Preconditions.checkState;
 
 public class MainTest {
 
-	private File inputFile1;
-	private File inputFile2;
-	private File outputFile;
+	private AtomicInteger counter;
+	private URL jsonResource;
 
 	@BeforeClass
-	private void setUpInputFile() throws IOException {
-		inputFile1 = File.createTempFile("sample1.", ".json");
-		inputFile2 = File.createTempFile("sample2.", ".json");
-		try (InputStream inputStream = MainTest.class.getClassLoader().getResourceAsStream("sample.json");
-			 OutputStream stream1 = new FileOutputStream(inputFile1);
-			 OutputStream stream2 = new FileOutputStream(inputFile2);
-			 OutputStream teeOutputStream = new TeeOutputStream(stream1, stream2)
-		) {
-			ByteStreams.copy(inputStream, teeOutputStream);
-		}
-		inputFile1.deleteOnExit();
-		inputFile2.deleteOnExit();
+	public void setUpClass() {
+		counter = new AtomicInteger(0);
+		jsonResource = MainTest.class.getClassLoader().getResource("sample.json");
 	}
 
-	@BeforeClass
-	private void setUpOutputFile() throws IOException {
-		//outputFile = File.createTempFile("sample", ".xls");
-		outputFile = new File("/Users/pennycurich/tmp/sample.xls");
-		System.out.println("output file is \n" + outputFile);
-		//outputFile.deleteOnExit();
-	}
+	@Test
+	public void testSingleFileInput() throws Exception {
+		int fingerprint = counter.incrementAndGet();
+		String prefix = String.format("sample%s.", fingerprint);
 
-	@DataProvider(name = "resourceProvider")
-	public Object[][] getResources() throws MalformedURLException {
+		File input = getInputFile(prefix);
+		File output = getOutputFile(prefix);
 
-		String parent = inputFile2.getParentFile().toURI().toURL().toExternalForm();
-		String outputFileExternalForm = outputFile.toURI().toURL().toExternalForm();
-
-		return new Object[][]{
-			{inputFile1.toURI().toURL().toExternalForm(), outputFileExternalForm},
-			{parent + "sample2.*.json", outputFileExternalForm}
-		};
-	}
-
-	@Test(dataProvider = "resourceProvider")
-	public void testInput(String inputResource, String outputResource) throws Exception {
+		String inputResource = input.toURI().toURL().toExternalForm();
+		String outputResource = output.toURI().toURL().toExternalForm();
 		String[] args = new String[]{"-i", inputResource, "-o", outputResource};
 		Main.main(args);
-		checkState(outputFile.exists(), "output file does not exist");
-		// TODO: open w/poi and examine
+		checkState(output.exists(), "output file does not exist");
+		assertReportContents(output, 3, 5);
 	}
 
+	private void assertReportContents(File output, int rowIndex, int cellIndex) throws IOException {
+		Workbook workbook;
+		try (FileInputStream inputStream = new FileInputStream(output)) {
+			workbook = new HSSFWorkbook(inputStream);
+		}
+
+		Sheet sheet = workbook.getSheetAt(0);
+		Row row = sheet.getRow(rowIndex);
+		Cell cell = row.getCell(cellIndex);
+		String value = cell.getStringCellValue();
+		String expected = "1512752459298\n(Fri Dec 08 11:00:59 CST 2017)";
+		Assert.assertEquals(value, expected, "report contains incorrect rendering");
+	}
+
+	private File getInputFile(String prefix) throws IOException {
+		File input = File.createTempFile(prefix, ".json");
+		input.deleteOnExit();
+		try (InputStream inputStream = jsonResource.openStream()) {
+			Files.copyFile(inputStream, input);
+		}
+		return input;
+	}
+
+	private File getOutputFile(String prefix) throws IOException {
+		File output = File.createTempFile(prefix, ".xls", new File("/Users/pennycurich/tmp/wut"));
+		//output.deleteOnExit();
+		return output;
+	}
+
+//	@Test
+//	public void testSingleFileWildcard() throws Exception {
+//
+//	}
+
 	@AfterClass
-	public void tearDown() {
+	public void tearDownClass() {
+		counter = null;
+		jsonResource = null;
 	}
 }

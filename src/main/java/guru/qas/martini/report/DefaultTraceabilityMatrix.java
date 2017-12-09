@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
@@ -49,6 +50,7 @@ import static guru.qas.martini.report.JsonObjectType.*;
 @SuppressWarnings("WeakerAccess")
 @Configurable
 public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTraceabilityMatrix.class);
 
 	protected final Gson gson;
@@ -70,27 +72,44 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		addHeader(sheet);
 
 		State state = new DefaultState();
-		while (reader.hasNext() && !isEndOfDocument(reader)) {
-			JsonElement next = gson.fromJson(reader, JsonElement.class);
-			if (null != next && next.isJsonObject()) {
-				JsonObject object = next.getAsJsonObject();
+		while (reader.hasNext()) {
+			JsonToken peek = reader.peek();
 
-				switch(JsonObjectType.evaluate(object)) {
-					case SUITE:
-						JsonObject suite = SUITE.get(object);
-						state.addSuite(suite);
-						break;
-					case FEATURE:
-						JsonObject feature = FEATURE.get(object);
-						state.addFeature(feature);
-						break;
-					case RESULT:
-						JsonObject result = RESULT.get(object);
-						addResult(state, sheet, result);
-						break;
-					default:
-						LOGGER.warn("skipping unrecognized JsonObject: {}", object);
-				}
+			JsonObject object;
+			switch (peek) {
+				case BEGIN_ARRAY:
+					reader.beginArray();
+					continue;
+				case BEGIN_OBJECT:
+					object = gson.fromJson(reader, JsonObject.class);
+					break;
+				case END_ARRAY:
+					reader.endArray();
+					continue;
+				case END_DOCUMENT:
+					reader.skipValue();
+					continue;
+				default:
+					JsonElement element = gson.fromJson(reader, JsonElement.class);
+					LOGGER.warn("skipping unhandled element {}", element);
+					continue;
+			}
+
+			switch (JsonObjectType.evaluate(object)) {
+				case SUITE:
+					JsonObject suite = SUITE.get(object);
+					state.addSuite(suite);
+					break;
+				case FEATURE:
+					JsonObject feature = FEATURE.get(object);
+					state.addFeature(feature);
+					break;
+				case RESULT:
+					JsonObject result = RESULT.get(object);
+					addResult(state, sheet, result);
+					break;
+				default:
+					LOGGER.warn("skipping unrecognized JsonObject: {}", object);
 			}
 		}
 
@@ -104,10 +123,7 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		outputStream.flush();
 	}
 
-	protected boolean isEndOfDocument(JsonReader reader) throws IOException {
-		JsonToken token = reader.peek();
-		return JsonToken.END_DOCUMENT == token;
-	}
+
 	protected void addHeader(HSSFSheet sheet) {
 		HSSFRow row = sheet.createRow(0);
 
