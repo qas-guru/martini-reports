@@ -20,8 +20,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.UUID;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -37,7 +37,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.reporters.Files;
 
@@ -57,33 +56,29 @@ public class MainTest {
 
 	@BeforeTest
 	public void setUp() throws IOException {
-		tmpDir = java.nio.file.Files.createTempDirectory(null).toFile();
+		String prefix = UUID.randomUUID().toString();
+		tmpDir = java.nio.file.Files.createTempDirectory(prefix).toFile();
 	}
 
-	@DataProvider(name = "singleFileProvider")
-	public Object[][] getSingleFileArguments() throws IOException {
+	@Test
+	public void testSingleFileInput() throws Exception {
+		String inputResource = getInputFile().toURI().toURL().toExternalForm();
+		File outputFile = getOutputFile();
+		String outputResource = outputFile.toURI().toURL().toExternalForm();
 
-		return new Object[][]{
-			{
-				getInputFile().toURI().toURL().toExternalForm(),
-				getOutputFile().toURI().toURL().toExternalForm()}
-		};
-	}
-
-	@Test(dataProvider = "singleFileProvider")
-	public void testSingleFileInput(String inputResource, String outputResource) throws Exception {
-		logger.info(inputResource);
-		logger.info(outputResource);
 		String[] args = new String[]{"-i", inputResource, "-o", outputResource};
 		Main.main(args);
-		File file = new File(new URI(outputResource).toURL().getFile());
-		checkState(file.exists(), "output file does not exist");
-		assertReportContents(file);
+		checkState(outputFile.exists(), "output file does not exist");
+		assertReportContents(outputFile);
 	}
 
 	private File getInputFile() throws IOException {
+		return getInputFile(tmpDir);
+	}
+
+	private File getInputFile(File parent) throws IOException {
 		UUID uuid = UUID.randomUUID();
-		File input = new File(tmpDir, uuid + ".json");
+		File input = new File(parent, uuid + ".json");
 		try (InputStream inputStream = jsonResource.openStream()) {
 			Files.copyFile(inputStream, input);
 		}
@@ -92,15 +87,71 @@ public class MainTest {
 
 	private File getOutputFile() throws IOException {
 		UUID uuid = UUID.randomUUID();
-		return  new File(tmpDir, uuid + ".xls");
+		return new File(tmpDir, uuid + ".xls");
+	}
+
+	@Test
+	public void testSingleFileWildcard() throws Exception {
+		Path subDir = java.nio.file.Files.createTempDirectory(tmpDir.toPath(), null);
+		getInputFile(subDir.toFile());
+		String inputResource = subDir.getParent().toUri().resolve("**/*.json").toURL().toExternalForm();
+
+		File outputFile = getOutputFile();
+		String outputResource = outputFile.toURI().toURL().toExternalForm();
+
+		String[] args = new String[]{"-i", inputResource, "-o", outputResource};
+		Main.main(args);
+		checkState(outputFile.exists(), "output file does not exist");
+		assertReportContents(outputFile);
+	}
+
+	@Test
+	public void testClassPathInput() throws Exception {
+		String inputResource = "classpath*:**/sample.json";
+
+		File outputFile = getOutputFile();
+		String outputResource = outputFile.toURI().toURL().toExternalForm();
+
+		String[] args = new String[]{"-i", inputResource, "-o", outputResource};
+		Main.main(args);
+		checkState(outputFile.exists(), "output file does not exist");
+		assertReportContents(outputFile);
+	}
+
+	@Test
+	public void testMultipleInput() throws Exception {
+		getInputFile();
+		getInputFile();
+
+		String inputResource = tmpDir.toURI().resolve("**/*.json").toURL().toExternalForm();
+
+		File outputFile = getOutputFile();
+		String outputResource = outputFile.toURI().toURL().toExternalForm();
+
+		String[] args = new String[]{"-i", inputResource, "-o", outputResource};
+		Main.main(args);
+		checkState(outputFile.exists(), "output file does not exist");
+
+		Workbook workbook = getWorkbook(outputFile);
+		assertReportContents(workbook);
+		Sheet sheet = workbook.getSheetAt(1);
+		int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
+		checkState(2 == physicalNumberOfRows,
+			"worksheet 'Suite' should contain two rows but contains %s", physicalNumberOfRows);
+	}
+
+	private Workbook getWorkbook(File output) throws IOException {
+		try (FileInputStream inputStream = new FileInputStream(output)) {
+			return new HSSFWorkbook(inputStream);
+		}
 	}
 
 	private void assertReportContents(File output) throws IOException {
-		Workbook workbook;
-		try (FileInputStream inputStream = new FileInputStream(output)) {
-			workbook = new HSSFWorkbook(inputStream);
-		}
+		Workbook workbook = getWorkbook(output);
+		assertReportContents(workbook);
+	}
 
+	private void assertReportContents(Workbook workbook) {
 		Sheet sheet = workbook.getSheetAt(0);
 		Row row = sheet.getRow(3);
 		Cell cell = row.getCell(5);
@@ -108,11 +159,6 @@ public class MainTest {
 		String expected = "1512752459298\n(Fri Dec 08 11:00:59 CST 2017)";
 		Assert.assertEquals(value, expected, "report contains incorrect rendering");
 	}
-
-//	@Test
-//	public void testSingleFileWildcard() throws Exception {
-//
-//	}
 
 	@AfterTest
 	public void tearDown() {
