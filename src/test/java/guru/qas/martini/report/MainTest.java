@@ -20,17 +20,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.UUID;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.FileSystemUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.reporters.Files;
 
@@ -38,58 +45,68 @@ import static com.google.common.base.Preconditions.checkState;
 
 public class MainTest {
 
-	private AtomicInteger counter;
+	private Logger logger;
 	private URL jsonResource;
+	private File tmpDir;
 
 	@BeforeClass
 	public void setUpClass() {
-		counter = new AtomicInteger(0);
+		logger = LoggerFactory.getLogger(this.getClass());
 		jsonResource = MainTest.class.getClassLoader().getResource("sample.json");
 	}
 
-	@Test
-	public void testSingleFileInput() throws Exception {
-		int fingerprint = counter.incrementAndGet();
-		String prefix = String.format("sample%s.", fingerprint);
+	@BeforeTest
+	public void setUp() throws IOException {
+		tmpDir = java.nio.file.Files.createTempDirectory(null).toFile();
+	}
 
-		File input = getInputFile(prefix);
-		File output = getOutputFile(prefix);
+	@DataProvider(name = "singleFileProvider")
+	public Object[][] getSingleFileArguments() throws IOException {
 
-		String inputResource = input.toURI().toURL().toExternalForm();
-		String outputResource = output.toURI().toURL().toExternalForm();
+		return new Object[][]{
+			{
+				getInputFile().toURI().toURL().toExternalForm(),
+				getOutputFile().toURI().toURL().toExternalForm()}
+		};
+	}
+
+	@Test(dataProvider = "singleFileProvider")
+	public void testSingleFileInput(String inputResource, String outputResource) throws Exception {
+		logger.info(inputResource);
+		logger.info(outputResource);
 		String[] args = new String[]{"-i", inputResource, "-o", outputResource};
 		Main.main(args);
-		checkState(output.exists(), "output file does not exist");
-		assertReportContents(output, 3, 5);
+		File file = new File(new URI(outputResource).toURL().getFile());
+		checkState(file.exists(), "output file does not exist");
+		assertReportContents(file);
 	}
 
-	private void assertReportContents(File output, int rowIndex, int cellIndex) throws IOException {
-		Workbook workbook;
-		try (FileInputStream inputStream = new FileInputStream(output)) {
-			workbook = new HSSFWorkbook(inputStream);
-		}
-
-		Sheet sheet = workbook.getSheetAt(0);
-		Row row = sheet.getRow(rowIndex);
-		Cell cell = row.getCell(cellIndex);
-		String value = cell.getStringCellValue();
-		String expected = "1512752459298\n(Fri Dec 08 11:00:59 CST 2017)";
-		Assert.assertEquals(value, expected, "report contains incorrect rendering");
-	}
-
-	private File getInputFile(String prefix) throws IOException {
-		File input = File.createTempFile(prefix, ".json");
-		input.deleteOnExit();
+	private File getInputFile() throws IOException {
+		UUID uuid = UUID.randomUUID();
+		File input = new File(tmpDir, uuid + ".json");
 		try (InputStream inputStream = jsonResource.openStream()) {
 			Files.copyFile(inputStream, input);
 		}
 		return input;
 	}
 
-	private File getOutputFile(String prefix) throws IOException {
-		File output = File.createTempFile(prefix, ".xls", new File("/Users/pennycurich/tmp/wut"));
-		//output.deleteOnExit();
-		return output;
+	private File getOutputFile() throws IOException {
+		UUID uuid = UUID.randomUUID();
+		return  new File(tmpDir, uuid + ".xls");
+	}
+
+	private void assertReportContents(File output) throws IOException {
+		Workbook workbook;
+		try (FileInputStream inputStream = new FileInputStream(output)) {
+			workbook = new HSSFWorkbook(inputStream);
+		}
+
+		Sheet sheet = workbook.getSheetAt(0);
+		Row row = sheet.getRow(3);
+		Cell cell = row.getCell(5);
+		String value = cell.getStringCellValue();
+		String expected = "1512752459298\n(Fri Dec 08 11:00:59 CST 2017)";
+		Assert.assertEquals(value, expected, "report contains incorrect rendering");
 	}
 
 //	@Test
@@ -97,9 +114,19 @@ public class MainTest {
 //
 //	}
 
+	@AfterTest
+	public void tearDown() {
+		try {
+			FileSystemUtils.deleteRecursively(tmpDir);
+		}
+		catch (Exception e) {
+			logger.warn("unable to delete tmp dir {}", tmpDir, e);
+		}
+	}
+
 	@AfterClass
 	public void tearDownClass() {
-		counter = null;
+		logger = null;
 		jsonResource = null;
 	}
 }
