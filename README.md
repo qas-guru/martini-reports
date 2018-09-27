@@ -12,7 +12,7 @@ Martini Reporting is a Java command-line tool used to generate a traceability ma
 output of a [Martini](https://github.com/qas-guru/martini-core) suite execution.
 
 
-### How does Martini Repors work? <a name="how"></a>
+### How does Martini Reports work? <a name="how"></a>
 
 The library parses Martini JSON output to generate a report in Excel format.
 
