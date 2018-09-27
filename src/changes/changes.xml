@@ -1,0 +1,24 @@
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+		  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		  xsi:schemaLocation="
+			http://maven.apache.org/changes/1.0.0
+			http://maven.apache.org/xsd/changes-1.0.0.xsd">
+
+	<properties>
+		<title>Martini Reporting Project</title>
+		<author email="penny.curich@gmail.com">Penny Rohr Curich</author>
+	</properties>
+
+	<body>
+		<release version="4.0.0-JDK10" date="2018-09-27" description="Release 4.0.0 for Java 10">
+			<action dev="pcurich" type="update">
+				Removed MIT license.
+				Updated to Java 10.
+				Updated Spring dependency.
+				Adding change tracking.
+				Updated POM plugin versions.
+			</action>
+		</release>
+	</body>
+
+</document>

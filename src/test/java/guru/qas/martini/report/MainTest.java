@@ -85,7 +85,7 @@ public class MainTest {
 		return input;
 	}
 
-	private File getOutputFile() throws IOException {
+	private File getOutputFile() {
 		UUID uuid = UUID.randomUUID();
 		return new File(tmpDir, uuid + ".xls");
 	}
