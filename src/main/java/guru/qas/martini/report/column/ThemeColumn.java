@@ -18,8 +18,9 @@ package guru.qas.martini.report.column;
 
 import java.util.LinkedHashSet;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Joiner;
@@ -45,14 +46,14 @@ public class ThemeColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void addResult(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, Cell cell, JsonObject o) {
 		JsonArray categories = o.getAsJsonArray(KEY);
 		if (null != categories) {
 			addResult(state, cell, categories);
 		}
 	}
 
-	protected void addResult(State state, HSSFCell cell, JsonArray categories) {
+	protected void addResult(State state, Cell cell, JsonArray categories) {
 		int size = categories.size();
 
 		LinkedHashSet<String> ordered = new LinkedHashSet<>();
@@ -64,7 +65,7 @@ public class ThemeColumn implements TraceabilityColumn {
 		}
 
 		String value = Joiner.on("\n").join(ordered);
-		HSSFRichTextString richTextString = new HSSFRichTextString(value);
+		RichTextString richTextString = new XSSFRichTextString(value);
 		cell.setCellValue(richTextString);
 
 		state.setThemes(cell, ordered);

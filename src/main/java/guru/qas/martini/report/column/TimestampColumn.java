@@ -18,8 +18,9 @@ package guru.qas.martini.report.column;
 
 import java.util.Date;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -46,14 +47,14 @@ public class TimestampColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void addResult(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, Cell cell, JsonObject o) {
 		JsonPrimitive primitive = o.getAsJsonPrimitive(KEY);
 		if (null != primitive) {
 			addResult(cell, primitive);
 		}
 	}
 
-	protected void addResult(HSSFCell cell, JsonPrimitive primitive) {
+	protected void addResult(Cell cell, JsonPrimitive primitive) {
 		String timestamp = primitive.getAsString();
 
 		String value;
@@ -66,7 +67,7 @@ public class TimestampColumn implements TraceabilityColumn {
 			LOGGER.warn("unable to parse '{}' to a long", timestamp, e);
 		}
 
-		HSSFRichTextString richTextString = new HSSFRichTextString(value);
+		RichTextString richTextString = new XSSFRichTextString(value);
 		cell.setCellValue(richTextString);
 	}
 }

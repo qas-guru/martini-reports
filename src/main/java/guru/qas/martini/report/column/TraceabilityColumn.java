@@ -16,15 +16,14 @@ limitations under the License.
 
 package guru.qas.martini.report.column;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-
 import com.google.gson.JsonObject;
 
 import guru.qas.martini.report.State;
+import org.apache.poi.ss.usermodel.Cell;
 
 @SuppressWarnings("WeakerAccess")
 public interface TraceabilityColumn {
 	String getLabel();
 
-	void addResult(State state, HSSFCell cell, JsonObject o);
+	void addResult(State state, Cell cell, JsonObject o);
 }
