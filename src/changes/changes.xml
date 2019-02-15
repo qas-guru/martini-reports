@@ -10,7 +10,7 @@
 	</properties>
 
 	<body>
-		<release version="6.0" date="2019-02-14" description="Release 6.0">
+		<release version="5.0.2" date="2019-02-14" description="Release 6.0">
 			<action dev="bnewman" type="update">
 				Updated to output XLSX instead of XLS.
 			</action>
