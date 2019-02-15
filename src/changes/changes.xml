@@ -10,6 +10,11 @@
 	</properties>
 
 	<body>
+		<release version="5.0.2" date="2019-02-14" description="Release 6.0">
+			<action dev="bnewman" type="update">
+				Updated to output XLSX instead of XLS.
+			</action>
+		</release>
 		<release version="5.0" date="2019-01-18" description="Release 5.0">
 			<action dev="pcurich" type="update">
 				Updated to Spring 5.1.14-RELEASE.

@@ -16,8 +16,9 @@ limitations under the License.
 
 package guru.qas.martini.report.column;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonElement;
@@ -42,11 +43,11 @@ public class FeatureNameColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void addResult(State state, HSSFCell cell, JsonObject result) {
+	public void addResult(State state, Cell cell, JsonObject result) {
 		JsonObject feature = state.getFeature(result);
 		JsonElement element = null == feature ? null : feature.get(KEY_NAME);
 		String name = null == element ? null : element.getAsString();
-		HSSFRichTextString richTextString = new HSSFRichTextString(name);
+		RichTextString richTextString = new XSSFRichTextString(name);
 		cell.setCellValue(richTextString);
 	}
 }

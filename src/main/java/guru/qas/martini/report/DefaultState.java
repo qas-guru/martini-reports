@@ -26,13 +26,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFCreationHelper;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -57,12 +57,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DefaultState implements State {
 	protected final static String KEY_FEATURE = "feature";
 
-	private final Multimap<String, HSSFCell> statii;
-	private final Multimap<String, HSSFCell> themes;
+	private final Multimap<String, Cell> statii;
+	private final Multimap<String, Cell> themes;
 	private final Map<String, JsonObject> suites;
 	private final Map<String, JsonObject> features;
 
-	private List<HSSFCell> longestExecutionCells;
+	private List<Cell> longestExecutionCells;
 	private long longestExecution;
 
 	protected DefaultState() {
@@ -75,19 +75,19 @@ public class DefaultState implements State {
 	}
 
 	@Override
-	public void setStatus(HSSFCell cell, String status) {
+	public void setStatus(Cell cell, String status) {
 		statii.put(status, cell);
 	}
 
 	@Override
-	public void setThemes(HSSFCell cell, Iterable<String> i) {
+	public void setThemes(Cell cell, Iterable<String> i) {
 		for (String theme : i) {
 			themes.put(theme, cell);
 		}
 	}
 
 	@Override
-	public void setExecutionTime(HSSFCell cell, long executionTime) {
+	public void setExecutionTime(Cell cell, long executionTime) {
 		if (executionTime == longestExecution) {
 			longestExecutionCells.add(cell);
 		}
@@ -107,29 +107,31 @@ public class DefaultState implements State {
 
 	public void updateLongestExecutions() {
 		if (!longestExecutionCells.isEmpty()) {
-			for (HSSFCell cell : longestExecutionCells) {
-				HSSFCellStyle original = cell.getCellStyle();
-				HSSFSheet sheet = cell.getSheet();
-				HSSFWorkbook workbook = sheet.getWorkbook();
-				HSSFCellStyle newStyle = workbook.createCellStyle();
+			for (Cell cell : longestExecutionCells) {
+				CellStyle original = cell.getCellStyle();
+				Sheet sheet = cell.getSheet();
+				Workbook workbook = sheet.getWorkbook();
+				CellStyle newStyle = workbook.createCellStyle();
 				newStyle.cloneStyleFrom(original);
-				HSSFFont originalFont = original.getFont(workbook);
+				int originalFontIndex = original.getFontIndexAsInt();
+				Font originalFont = workbook.getFontAt(originalFontIndex);
 
-				HSSFFont font = workbook.createFont();
+
+				Font font = workbook.createFont();
 				font.setBold(true);
 				font.setColor(IndexedColors.DARK_RED.getIndex());
 				font.setFontHeight((short) Math.round(originalFont.getFontHeight() * 1.5));
 				newStyle.setFont(font);
 				cell.setCellStyle(newStyle);
 
-				HSSFRow row = cell.getRow();
+				Row row = cell.getRow();
 				short firstCellNum = row.getFirstCellNum();
 				short lastCellNum = row.getLastCellNum();
 
 				for (int i = firstCellNum; i < lastCellNum; i++) {
-					HSSFCell rowCell = row.getCell(i);
+					Cell rowCell = row.getCell(i);
 					original = rowCell.getCellStyle();
-					HSSFCellStyle borderStyle = workbook.createCellStyle();
+					CellStyle borderStyle = workbook.createCellStyle();
 					borderStyle.cloneStyleFrom(original);
 					borderStyle.setBorderTop(BorderStyle.MEDIUM);
 					borderStyle.setBorderBottom(BorderStyle.MEDIUM);
@@ -151,8 +153,8 @@ public class DefaultState implements State {
 	}
 
 	public void colorRowsByStatus() {
-		Map<String, Collection<HSSFCell>> statusMap = statii.asMap();
-		for (Map.Entry<String, Collection<HSSFCell>> mapEntry : statusMap.entrySet()) {
+		Map<String, Collection<Cell>> statusMap = statii.asMap();
+		for (Map.Entry<String, Collection<Cell>> mapEntry : statusMap.entrySet()) {
 			String status = mapEntry.getKey();
 
 			Short color = null;
@@ -169,29 +171,29 @@ public class DefaultState implements State {
 			}
 
 			if (null != color) {
-				Collection<HSSFCell> statusCells = mapEntry.getValue();
+				Collection<Cell> statusCells = mapEntry.getValue();
 				colorRows(color, statusCells);
 			}
 		}
 	}
 
-	protected void colorRows(short color, Iterable<HSSFCell> cells) {
-		for (HSSFCell cell : cells) {
-			HSSFRow row = cell.getRow();
+	protected void colorRows(short color, Iterable<Cell> cells) {
+		for (Cell cell : cells) {
+			Row row = cell.getRow();
 			colorRow(color, row);
 
 		}
 	}
 
-	protected void colorRow(short color, HSSFRow row) {
+	protected void colorRow(short color, Row row) {
 		short firstCellNum = row.getFirstCellNum();
 		short lastCellNum = row.getLastCellNum();
 		for (int i = firstCellNum; i <= lastCellNum; i++) {
-			HSSFCell cell = row.getCell(i - 1);
+			Cell cell = row.getCell(i);
 			if (null != cell) {
-				HSSFCellStyle cellStyle = cell.getCellStyle();
-				HSSFWorkbook workbook = cell.getSheet().getWorkbook();
-				HSSFCellStyle clone = workbook.createCellStyle();
+				CellStyle cellStyle = cell.getCellStyle();
+				Workbook workbook = cell.getSheet().getWorkbook();
+				CellStyle clone = workbook.createCellStyle();
 
 				clone.cloneStyleFrom(cellStyle);
 				clone.setFillForegroundColor(color);
@@ -222,25 +224,25 @@ public class DefaultState implements State {
 	}
 
 	protected void colorCompromisedThemes() {
-		Collection<HSSFCell> failed = statii.get("FAILED");
+		Collection<Cell> failed = statii.get("FAILED");
 
 		if (!failed.isEmpty()) {
-			List<HSSFRow> rows = Lists.newArrayListWithExpectedSize(failed.size());
-			for (HSSFCell cell : failed) {
-				HSSFRow row = cell.getRow();
+			List<Row> rows = Lists.newArrayListWithExpectedSize(failed.size());
+			for (Cell cell : failed) {
+				Row row = cell.getRow();
 				rows.add(row);
 			}
 
-			Set<HSSFCell> compromisedThemeCells = Sets.newHashSet();
+			Set<Cell> compromisedThemeCells = Sets.newHashSet();
 
-			Map<String, Collection<HSSFCell>> themeMap = themes.asMap();
-			for (Map.Entry<String, Collection<HSSFCell>> mapEntry : themeMap.entrySet()) {
-				Collection<HSSFCell> themeCells = mapEntry.getValue();
+			Map<String, Collection<Cell>> themeMap = themes.asMap();
+			for (Map.Entry<String, Collection<Cell>> mapEntry : themeMap.entrySet()) {
+				Collection<Cell> themeCells = mapEntry.getValue();
 
 				boolean compromised = false;
-				for (Iterator<HSSFCell> iterator = themeCells.iterator(); !compromised && iterator.hasNext(); ) {
-					HSSFCell themeCell = iterator.next();
-					HSSFRow row = themeCell.getRow();
+				for (Iterator<Cell> iterator = themeCells.iterator(); !compromised && iterator.hasNext(); ) {
+					Cell themeCell = iterator.next();
+					Row row = themeCell.getRow();
 					compromised = rows.contains(row);
 				}
 
@@ -250,7 +252,7 @@ public class DefaultState implements State {
 			}
 
 			Set<String> compromisedThemes = Sets.newHashSet();
-			for (HSSFCell themeCell : compromisedThemeCells) {
+			for (Cell themeCell : compromisedThemeCells) {
 				String contents = themeCell.getStringCellValue();
 				if (null != contents) {
 					Iterable<String> themes = Splitter.onPattern("\\s+").omitEmptyStrings().split(contents);
@@ -259,18 +261,19 @@ public class DefaultState implements State {
 			}
 
 			for (String theme : compromisedThemes) {
-				Collection<HSSFCell> cells = themes.get(theme);
-				for (HSSFCell cell : cells) {
-					HSSFCellStyle cellStyle = cell.getCellStyle();
-					HSSFSheet sheet = cell.getSheet();
-					HSSFWorkbook workbook = sheet.getWorkbook();
+				Collection<Cell> cells = themes.get(theme);
+				for (Cell cell : cells) {
+					CellStyle cellStyle = cell.getCellStyle();
+					Sheet sheet = cell.getSheet();
+					Workbook workbook = sheet.getWorkbook();
 
-					HSSFFont originalFont = cellStyle.getFont(workbook);
+					int originalFontIndex = cellStyle.getFontIndexAsInt();
+					Font originalFont = workbook.getFontAt(originalFontIndex);
 
-					HSSFCellStyle clone = workbook.createCellStyle();
+					CellStyle clone = workbook.createCellStyle();
 					clone.cloneStyleFrom(cellStyle);
 
-					HSSFFont font = workbook.findFont(
+					Font font = workbook.findFont(
 						true,
 						IndexedColors.DARK_RED.getIndex(),
 						originalFont.getFontHeight(),
@@ -327,9 +330,9 @@ public class DefaultState implements State {
 
 
 	@Override
-	public void updateSuites(HSSFSheet sheet) {
+	public void updateSuites(Sheet sheet) {
 		int lastRowNum = sheet.getLastRowNum();
-		HSSFRow row = sheet.createRow(0 == lastRowNum ? 0 : lastRowNum + 1);
+		Row row = sheet.createRow(0 == lastRowNum ? 0 : lastRowNum + 1);
 		row.createCell(0, CellType.STRING).setCellValue("ID");
 		row.createCell(1, CellType.STRING).setCellValue("Date");
 		row.createCell(2, CellType.STRING).setCellValue("Name");
@@ -349,11 +352,11 @@ public class DefaultState implements State {
 			JsonPrimitive primitive = suite.getAsJsonPrimitive("startTimestamp");
 			Long timestamp = null == primitive ? null : primitive.getAsLong();
 
-			HSSFCell cell = row.createCell(1);
+			Cell cell = row.createCell(1);
 			if (null != timestamp) {
-				HSSFWorkbook workbook = sheet.getWorkbook();
-				HSSFCellStyle cellStyle = workbook.createCellStyle();
-				HSSFCreationHelper creationHelper = workbook.getCreationHelper();
+				Workbook workbook = sheet.getWorkbook();
+				CellStyle cellStyle = workbook.createCellStyle();
+				CreationHelper creationHelper = workbook.getCreationHelper();
 				cellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("m/d/yy h:mm"));
 				cellStyle.setVerticalAlignment(VerticalAlignment.TOP);
 				cell.setCellValue(new Date(timestamp));

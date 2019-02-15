@@ -16,18 +16,17 @@ limitations under the License.
 
 package guru.qas.martini.report;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-
 import com.google.gson.JsonObject;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
 
 public interface State {
 
-	void setStatus(HSSFCell cell, String status);
+	void setStatus(Cell cell, String status);
 
-	void setThemes(HSSFCell cell, Iterable<String> themes);
+	void setThemes(Cell cell, Iterable<String> themes);
 
-	void setExecutionTime(HSSFCell cell, long executionTime);
+	void setExecutionTime(Cell cell, long executionTime);
 
 	void addSuite(JsonObject suite);
 
@@ -35,7 +34,7 @@ public interface State {
 
 	void updateResults();
 
-	void updateSuites(HSSFSheet sheet);
+	void updateSuites(Sheet sheet);
 
 	JsonObject getFeature(JsonObject result);
 }
