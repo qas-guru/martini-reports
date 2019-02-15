@@ -35,5 +35,5 @@ The library parses Martini JSON output to generate a report in Excel format.
 
 ### Where can I find more information? <a name="info"></a>
 
-#### In Progress: [Martini Standalone Wiki](https://github.com/qas-guru/martini-reports/wiki) 
+#### In Progress: [Martini Standalone Wiki](https://github.com/qas-guru/martini-standalone/wiki) 
 #### In Progress: [__Martini - swank software testing in Java__](https://leanpub.com/martini) 
