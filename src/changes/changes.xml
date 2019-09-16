@@ -10,9 +10,19 @@
 	</properties>
 
 	<body>
+		<release version="6.0.1-JDK12" date="2019-09-16" description="Release 6.0-JDK12">
+			<action dev="pcurich" type="update">
+				Updating poi-ooxml to latest available libraries.
+			</action>
+		</release>
 		<release version="6.0-JDK12" date="2019-09-16" description="Release 6.0-JDK12">
 			<action dev="pcurich" type="update">
 				Updating dependencies to latest available libraries.
+			</action>
+		</release>
+		<release version="5.0.2" date="2019-02-14" description="Release 6.0">
+			<action dev="bnewman" type="update">
+				Updated to output XLSX instead of XLS.
 			</action>
 		</release>
 		<release version="5.0" date="2019-01-18" description="Release 5.0">

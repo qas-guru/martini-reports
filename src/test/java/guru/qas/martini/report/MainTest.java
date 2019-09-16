@@ -24,11 +24,11 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.UUID;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.FileSystemUtils;
@@ -142,7 +142,7 @@ public class MainTest {
 
 	private Workbook getWorkbook(File output) throws IOException {
 		try (FileInputStream inputStream = new FileInputStream(output)) {
-			return new HSSFWorkbook(inputStream);
+			return new XSSFWorkbook(inputStream);
 		}
 	}
 

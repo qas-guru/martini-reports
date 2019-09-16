@@ -16,7 +16,7 @@ limitations under the License.
 
 package guru.qas.martini.report.column;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonElement;
@@ -41,7 +41,7 @@ public class ExecutionTimeColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void addResult(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, Cell cell, JsonObject o) {
 		Long start = getTimestamp(o, KEY_START);
 		Long end = null == start ? null : getTimestamp(o, KEY_END);
 		Long executionTime = null == end ? null : end - start;
@@ -54,7 +54,7 @@ public class ExecutionTimeColumn implements TraceabilityColumn {
 		return null == element ? null : element.getAsLong();
 	}
 
-	protected void doSomething(State state, HSSFCell cell, Long executionTime) {
+	protected void doSomething(State state, Cell cell, Long executionTime) {
 		if (null != executionTime) {
 			cell.setCellValue(executionTime);
 			state.setExecutionTime(cell, executionTime);

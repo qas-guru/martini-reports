@@ -16,8 +16,9 @@ limitations under the License.
 
 package guru.qas.martini.report.column;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonObject;
@@ -41,11 +42,11 @@ public class StatusColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void addResult(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, Cell cell, JsonObject o) {
 		JsonPrimitive primitive = o.getAsJsonPrimitive(KEY);
 		String status = null == primitive ? null : primitive.getAsString();
 
-		HSSFRichTextString richTextString = new HSSFRichTextString(status);
+		RichTextString richTextString = new XSSFRichTextString(status);
 		cell.setCellValue(richTextString);
 		state.setStatus(cell, status);
 	}

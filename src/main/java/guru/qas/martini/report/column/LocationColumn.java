@@ -16,8 +16,9 @@ limitations under the License.
 
 package guru.qas.martini.report.column;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonElement;
@@ -42,7 +43,7 @@ public class LocationColumn implements TraceabilityColumn {
 	}
 
 	@Override
-	public void addResult(State state, HSSFCell cell, JsonObject o) {
+	public void addResult(State state, Cell cell, JsonObject o) {
 		String line = getLine(o);
 		String relative = getResource(state, o);
 
@@ -53,7 +54,7 @@ public class LocationColumn implements TraceabilityColumn {
 		}
 
 		String value = builder.toString();
-		HSSFRichTextString richTextString = new HSSFRichTextString(value);
+		RichTextString richTextString = new XSSFRichTextString(value);
 		cell.setCellValue(richTextString);
 		state.setStatus(cell, value);
 	}

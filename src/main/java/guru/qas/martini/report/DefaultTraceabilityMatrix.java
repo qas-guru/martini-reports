@@ -19,16 +19,17 @@ package guru.qas.martini.report;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
@@ -53,6 +53,8 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTraceabilityMatrix.class);
 
+	private static final String ARIAL = "Arial";
+
 	protected final Gson gson;
 	protected final ImmutableList<TraceabilityColumn> columns;
 
@@ -67,8 +69,8 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		checkNotNull(reader, "null JsonReader");
 		checkNotNull(outputStream, "null OutputStream");
 
-		HSSFWorkbook workbook = new HSSFWorkbook();
-		HSSFSheet sheet = workbook.createSheet("Results");
+		Workbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("Results");
 		addHeader(sheet);
 
 		State state = new DefaultState();
@@ -116,7 +118,7 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		state.updateResults();
 		resizeColumns(sheet);
 
-		HSSFSheet suiteSheet = workbook.createSheet("Suites");
+		Sheet suiteSheet = workbook.createSheet("Suites");
 		state.updateSuites(suiteSheet);
 
 		workbook.write(outputStream);
@@ -124,15 +126,15 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 	}
 
 
-	protected void addHeader(HSSFSheet sheet) {
-		HSSFRow row = sheet.createRow(0);
+	protected void addHeader(Sheet sheet) {
+		Row row = sheet.createRow(0);
 
-		HSSFWorkbook workbook = sheet.getWorkbook();
-		HSSFCellStyle style = getHeaderStyle(workbook);
+		Workbook workbook = sheet.getWorkbook();
+		CellStyle style = getHeaderStyle(workbook);
 
 		for (int i = 0; i < columns.size(); i++) {
 			TraceabilityColumn column = columns.get(i);
-			HSSFCell cell = row.createCell(i, CellType.STRING);
+			Cell cell = row.createCell(i, CellType.STRING);
 			String label = column.getLabel();
 			cell.setCellValue(label);
 			cell.setCellStyle(style);
@@ -140,53 +142,53 @@ public class DefaultTraceabilityMatrix implements TraceabilityMatrix {
 		sheet.createFreezePane(0, 1);
 	}
 
-	protected HSSFCellStyle getHeaderStyle(HSSFWorkbook workbook) {
-		HSSFCellStyle style = workbook.createCellStyle();
+	protected CellStyle getHeaderStyle(Workbook workbook) {
+		CellStyle style = workbook.createCellStyle();
 		style.setBorderBottom(BorderStyle.MEDIUM);
-		HSSFFont headerFont = getHeaderFont(workbook);
+		Font headerFont = getHeaderFont(workbook);
 		style.setFont(headerFont);
 		return style;
 	}
 
-	protected HSSFFont getHeaderFont(HSSFWorkbook workbook) {
-		HSSFFont font = workbook.findFont(
+	protected Font getHeaderFont(Workbook workbook) {
+		Font font = workbook.findFont(
 			true, // bold
 			IndexedColors.BLACK.getIndex(),
 			(short) 300,
-			HSSFFont.FONT_ARIAL,
+				ARIAL,
 			false, // italic
 			false, // strikeout
-			HSSFFont.SS_NONE,
-			HSSFFont.U_NONE);
+			Font.SS_NONE,
+			Font.U_NONE);
 
 		if (null == font) {
 			font = workbook.createFont();
 			font.setBold(true);
 			font.setColor(IndexedColors.BLACK.getIndex());
 			font.setFontHeight((short) 300);
-			font.setFontName(HSSFFont.FONT_ARIAL);
+			font.setFontName(ARIAL);
 			font.setItalic(false);
 			font.setStrikeout(false);
-			font.setTypeOffset(HSSFFont.SS_NONE);
-			font.setUnderline(HSSFFont.U_NONE);
+			font.setTypeOffset(Font.SS_NONE);
+			font.setUnderline(Font.U_NONE);
 		}
 		return font;
 	}
 
-	protected void addResult(State state, HSSFSheet sheet, JsonObject object) {
+	protected void addResult(State state, Sheet sheet, JsonObject object) {
 		int index = sheet.getLastRowNum();
-		HSSFRow row = sheet.createRow(index + 1);
+		Row row = sheet.createRow(index + 1);
 
 		for (int i = 0; i < columns.size(); i++) {
-			HSSFCell cell = row.createCell(i);
-			HSSFCellStyle cellStyle = cell.getCellStyle();
+			Cell cell = row.createCell(i);
+			CellStyle cellStyle = cell.getCellStyle();
 			cellStyle.setVerticalAlignment(VerticalAlignment.TOP);
 			TraceabilityColumn column = columns.get(i);
 			column.addResult(state, cell, object);
 		}
 	}
 
-	protected void resizeColumns(HSSFSheet sheet) {
+	protected void resizeColumns(Sheet sheet) {
 		for (int i = 0; i < columns.size(); i++) {
 			sheet.autoSizeColumn(i, false);
 		}
